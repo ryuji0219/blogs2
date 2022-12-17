@@ -1,29 +1,7 @@
 @extends('layout')
 @section('title', 'ブログ一覧')
 @section('content')
-@include('modal_window')
 <body>
-    <div id="faq_csv_modal_window">
-        {{-- モーダルウィンドウ --}}
-        @section('modal_window')
-            <div id="modal_open">
-                <header id="modal_header">
-                    モーダルヘッダーです。
-                </header>
-                <main id="modal_main">
-        
-                </main>
-                <footer id="modal_footer">
-                    <p><a id="modal-close" class="button-link">閉じる</a></p>
-                </footer>
-            </div>
-        @endsection
-        @yield('modal_window')
-        </div>
-        
-
-
-
     <div class="row">
         <div class="col-md-10">
             @if (session('logout_msg'))
