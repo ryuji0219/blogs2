@@ -35,6 +35,49 @@ class BlogController extends Controller
             $user=session('user');
         }
 
+        
+        $ids = [111,222,333];
+        // $r_ids = [];
+        foreach ($ids as $id){
+            $r_ids[] = (object)['id' => $id];
+        };
+        $c_ids = collect($r_ids);
+
+        $new_test_ids = [];
+        foreach ($c_ids as $c_id) {
+            array_push($new_test_ids, $c_id->id);
+        }
+        
+        $claim_datas = [
+            ['payment_times' => 1,  'countings_id' => '111'],
+            ['payment_times' => 2,  'countings_id' => '222'],
+            ['payment_times' => 3,  'countings_id' => '333'],
+            ['payment_times' => 1,  'countings_id' => '111'],
+            ['payment_times' => 1,  'countings_id' => '111'],
+        ];
+
+        $countings_datas = [];
+        foreach ($claim_datas as $index => $claim_data){
+            if (empty($countings_datas[$claim_data['payment_times']])){
+                $countings_datas[$claim_data['payment_times']] = $claim_data['countings_id'];
+            }
+        }
+
+        $counting_ids = []; 
+        foreach ($countings_datas as $index => $countings_data) {
+           $counting_ids[] = (object)['id' => $countings_data];
+        }
+
+        foreach ($countings_datas as $index => $value) {
+            $counting_ids[] = (object)['id' => $value];
+         }
+
+        // $c_counting_ids = collect($counting_ids);
+        // foreach ($c_counting_ids as $c_counting_id) {
+        //     array_push($new_ids, $c_counting_id->id);
+        // }
+     
+  
         // $query0 = blog::select(DB::raw('title', 'id'));
         $query0 = DB::table('blogs');
         $query0->where(DB::raw("CONCAT(id, '-', title)"), 'like', '%' . 'a' . '%')->get();
@@ -103,25 +146,9 @@ class BlogController extends Controller
         // $query->whereRaw("b.updated_at >=  :date_from AND b.updated_at >=  :date_to ",
         // ['date_from' =>  $date_from,'date_to' =>  $date_to]);
 
-
-
        $query_all = $query->get();
  
-
-            //  ->select('b.id','CONCAT(b.title, b.id)','b.content','u.name','b.updated_at')
-        //    ->statement('IFNULL (TIMESTAMPDIFF(YEAR, CONCAT(birth_y,'/',IFNULL(birth_m,1),'/',IFNULL(birth_d,1)), CURDATE()),0) >= 10 ')->get();           ->orderBy('b.created_at', 'desc')
-        //    ->get(); 
-
-           
         $blogs = $query_all->paginate(PAGE_NUM);
-
-
-
-        // dd($blogs);
-        //  print_r($blogs);
-        // echo($blogs);
-
-        // return view('BlogList',compact('user','blogs'));
         return view::make('BlogList',['user'=>$user,'blogs'=>$blogs]);
     }
 

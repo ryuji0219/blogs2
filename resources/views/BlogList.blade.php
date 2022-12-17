@@ -1,7 +1,29 @@
 @extends('layout')
 @section('title', 'ブログ一覧')
 @section('content')
+@include('modal_window')
 <body>
+    <div id="faq_csv_modal_window">
+        {{-- モーダルウィンドウ --}}
+        @section('modal_window')
+            <div id="modal_open">
+                <header id="modal_header">
+                    モーダルヘッダーです。
+                </header>
+                <main id="modal_main">
+        
+                </main>
+                <footer id="modal_footer">
+                    <p><a id="modal-close" class="button-link">閉じる</a></p>
+                </footer>
+            </div>
+        @endsection
+        @yield('modal_window')
+        </div>
+        
+
+
+
     <div class="row">
         <div class="col-md-10">
             @if (session('logout_msg'))
@@ -64,14 +86,12 @@
             @endif            
              {{-- 一覧表示  --}}
             <table class="table table-striped">
-                @if ( !empty($user["name"]))
                 <tr>
                     <th>番号</th>
                     <th>タイトル</th>
                     <th>作成者</th>
                     <th>更新日時</th>
                 </tr>
-                @endif
                 @foreach($blogs as  $blog)
                 <tr>
                     <td>{{ $loop->index + 1 + 10*($blogs->currentPage()-1)}}</td>
@@ -84,6 +104,7 @@
             {{-- ページング表示 pagination::defaultは先頭/最終ページリンク用--}}
             {{ $blogs->links('pagination::default') }}
         </div>
+
     </div>
 </body>
 @endsection
