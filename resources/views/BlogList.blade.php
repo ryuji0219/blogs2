@@ -4,20 +4,49 @@
 <body>
     <div class="row">
         <div class="col-md-10">
-            @if (session('logout_msg'))
+            @if ($errors->any())
+                <div class="alert text-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        {{ $error }} . <br>
+                        @endforeach 
+                    </ul>
+                </div>
+            @elseif (session('err_member'))
+                {{-- 会員登録エラー --}}
+                <div class="text-danger">
+                  {{ session('err_member') }}
+                </div>
+            @elseif (session('login_error'))
+                <div class="text-danger">
+                  {{ session('login_error') }}
+                </div>
+            @elseif (session('logout_msg'))
                 <p class="text-danger">
                     {{ session('logout_msg') }}
                 </p>
+            @elseif (session('member_ok'))
+                <div class="text-primary">
+                    {{ session('member_ok') }}
+                </div>
+            @elseif (session('session_error'))
+                <div class="text-primary">
+                    {{ session('session_error') }}
+                </div>
             @endif 
+
+            <div class='user'>
+                @if (!empty($user["name"]))
+                    <p2>ユーザ名：{{ $user["name"] }}</p2>
+                    {{-- <p3>ログイン時間：{{ $user["login_at"] }}</p3> --}}
+                @else
+                    <p2>ゲストさん</p2>
+                @endif
+            </div>
+
             <h1>ブログ記事一覧</h1>
 
-            @if ( !empty($user["name"]))
-                <p2>ユーザ名：{{ $user["name"] }}</p2>
-                <p3>ログイン時間：{{ $user["login_at"] }}</p3>
-            @else
-                <p2>ゲストさん</p2>
-            @endif
-  
+            {{-- 検索処理 --}}
             <form method="post" class="search_all" action="{{route('BlogSearch')}}">
             @csrf
                 @if (isset($search['text']))

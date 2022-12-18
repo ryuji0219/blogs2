@@ -30,20 +30,6 @@ form *{
 	color:#f00;
 }
 
-#modal-content{
-	/*追加分*/
-	z-index:2;
-}
-
-$("#modal-open").click(
-	function(){
-		//[id:modal-open]をクリックしたら起こる処理
-	}
-);
-/* モーダルウィンドウ用 */
-
-
-
 p2{
 	position:absolute;top: 27pt; 
 	right:20px;
@@ -71,13 +57,7 @@ p3{
 
 .search_button {
 	background-color: skyblue; 
-	right:10px;
-}
-
-.searchXX {
-	position:absolute;top: 30pt; 
-	right:200px;
-	width: 100px;
+	right:1000px;
 }
 
 .button_place {

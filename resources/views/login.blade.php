@@ -45,7 +45,7 @@
        @endif     
        <br>
       
-       <button class="btn btn-lg btn-primary button_place" type="submit">ログイン</button> 　　　　
+       <button class="btn btn-lg btn-primary button_place" type="submit">ログイン</button>
  </form>
 </body>
 @endsection

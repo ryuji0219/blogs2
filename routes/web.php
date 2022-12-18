@@ -13,9 +13,12 @@ Route::get('/', function () {
 });
 
 #ログイン画面表示
-Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
+// Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
 #ログイン操作
 Route::post('home', [LoginController::class,'DoLogin'])->name('login');
+
+Route::post('loginCheck', [LoginController::class,'DoLoginCheck'])->name('loginCheck');
+
 #ログアウト操作
 Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
 
@@ -28,6 +31,9 @@ Route::get('DeleteUser', [UserCreateController::class,'exeUserDelete'])->name('D
 
 #ブログ一覧画面表示
 Route::get('home', 'App\Http\Controllers\BlogController@showHome')->name('home');
+// Route::post('home2', [BlogController::class,'showHome2'])->name('home2');
+// Route::get('postgmail', [BlogController::class, 'HomeController'])->name('postGmail');
+
 #プログ検索
 Route::post('BlogSearch', [SearchController::class,'exeBlogSearch'])->name('BlogSearch');
 #プログ検索時の一覧画面表示
