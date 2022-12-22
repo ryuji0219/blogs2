@@ -1,8 +1,13 @@
 <body>
-  <form class="form-signin" method="POST" action="{{route('login')}}">
+  {{-- <form class="form-signin" method="POST" action="{{route('login')}}"> --}}
+ <div class="form-signin">
       @csrf
     <h1 class="h3 mb-3 font-weight-normal">ログイン画面</h1>
-
+    @if (session('login_error'))
+      <div class="text-danger">
+        {{ session('login_error') }}
+      </div>
+    @endif
       {{-- @if (session('session_error'))
         <div class="text-primary">
           {{ session('session_error') }}
@@ -50,5 +55,5 @@
        {{-- クローズ --}}
        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
        {{-- <button type="button" class="btn btn-secondary btn-close">Close</button> --}}
-  </form>
+  </div>
 </body>

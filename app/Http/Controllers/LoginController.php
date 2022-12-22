@@ -39,7 +39,7 @@ class LoginController extends Controller
     
         // ログインチェック
         if(strtolower($name) == strtolower($DB_User["name"]) && 
-        $pass == $DB_User["password"]){
+            $pass == $DB_User["password"]){
             return 'OK';
         }
         else{
