@@ -25,9 +25,7 @@ class LoginFormRequest extends FormRequest
     {
         return [
             'name' => 'required|max:12',
-            'password' => 'required',
-            // 'email' => 'required',
-            // 'pass2' => 'required'
+            'password' => 'required'
         ];
     }
 
@@ -35,9 +33,7 @@ class LoginFormRequest extends FormRequest
     {
         return [
             'name' => 'ユーザ名',
-            'password' => 'パスワード',
-            // 'email' => 'Eメール',
-            // 'pass2' => '確認用パスワード'
+            'password' => 'パスワード'
         ];
     }
 }
