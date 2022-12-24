@@ -19,7 +19,7 @@ $('.modal-login').click(function() {
       //POST通信
       type: "post",
       //ここでデータの送信先URLを指定します。
-      url: "/loginCheck",
+      url: "loginCheck",
       dataType: "json",
       data: {
         name: name,
