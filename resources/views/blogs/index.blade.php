@@ -1,4 +1,4 @@
-@extends('layout2')
+{{-- @extends('layout2')
 
 @section('content')
 
@@ -7,14 +7,14 @@
     <table class="table table-striped">
     @foreach($blogs as $blog)
         <tr>
-            <td>{{$blog->id}}</td>
+            {{-- <td>{{$blog->id}}</td>
             <td>{{$blog->title}}</td>
-            <td>{{$blog->content}}</td>
+            <td>{{$blog->content}}</td> --}}
         </tr>
     @endforeach
     </table>
 
     <!-- page control -->
-    {!! $blogs->render() !!}
+    {{-- {!! $blogs->render() !!} --}}
 
-@stop
+@stop --}}

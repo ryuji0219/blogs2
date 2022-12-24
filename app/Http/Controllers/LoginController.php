@@ -22,6 +22,31 @@ class LoginController extends Controller
     }
 
     // ログイン処理
+    public function DoLoginCheck(LoginFormRequest $request){
+        $err[] = [];
+        $name = $request['name'];
+        //小文字変換 → 暗号化
+        $pass = md5(strtolower($request['password']));
+        $DB_User = User::where('name',$name)->first();
+        if ($DB_User == NULL){
+             return 'error';
+       }
+    
+        // ログインチェック
+        if(strtolower($name) == strtolower($DB_User["name"]) && 
+            $pass == $DB_User["password"]){
+                // $this->DoLogin($request);
+                return true;
+        }
+        else{
+            return false;
+            // return back()-> with([
+            //     'login_error' => 'ユーザ名とパスワードが一致しません!',
+            // ]);
+        }    
+    }
+
+    // ログイン処理
     public function DoLogin(LoginFormRequest $request){
         $err[] = [];
         $name = $request['name'];
@@ -32,7 +57,7 @@ class LoginController extends Controller
         $DB_User = User::where('name',$name)->first();
         if ($DB_User == NULL){
              return back()-> with([
-                'login_error' => '登録されていない<br>ユーザ名です',
+                'login_error' => '登録されていないユーザ名です',
             ]);
        }
         // ログインチェック
@@ -69,7 +94,7 @@ class LoginController extends Controller
    
          }
         else{
-            print $DB_User["name"] . " " . $DB_User["password"];
+            // print $DB_User["name"] . " " . $DB_User["password"];
             return back()-> with([
                 'login_error' => 'ユーザ名とパスワードが一致しません!',
             ]);

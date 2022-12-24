@@ -96,7 +96,7 @@ return [
     'password'             => '正しいパスワードを入力してください。',
     'present'              => ':attributeが存在していません。',
     'regex'                => ':attributeに正しい形式を入力してください。',
-    'required'             => ':attributeは必ず入力してください。',
+    'required'             => ':attributeを入力してください。',
     'required_if'          => ':otherが:valueの場合、:attributeも入力してください。',
     'required_unless'      => ':otherが:valuesでない場合、:attributeを入力してください。',
     'required_with'        => ':valuesを指定する場合は、:attributeも入力してください。',

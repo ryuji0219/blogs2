@@ -1,16 +1,13 @@
-@extends('layout')
-@section('title', 'ログイン画面')
-@section('content')
 <body>
-  <form class="form-signin" method="POST" action="{{route('login')}}">
-  @csrf
+  {{-- <form class="form-signin" method="POST" action="{{route('login')}}"> --}}
+ <div class="form-signin">
+      @csrf
     <h1 class="h3 mb-3 font-weight-normal">ログイン画面</h1>
-
-      @if (session('session_error'))
-        <div class="text-primary">
-          {{ session('session_error') }}
-        </div>
-       @endif
+    @if (session('login_error'))
+      <div class="text-danger">
+        {{ session('login_error') }}
+      </div>
+    @endif
 
       <div class="cp_iptxt">
 	      <label class="ef">
@@ -45,7 +42,13 @@
        @endif     
        <br>
       
-       <button class="btn btn-lg btn-primary button_place" type="submit">ログイン</button>
- </form>
+       {{-- オープン --}}
+       {{-- <button type="submit" class="btn btn-primary modal-login">ログイン</button> --}}
+       <button class="btn btn-primary modal-login">ログイン</button>
+       {{-- <input type="button" class="btn btn-primary modal-login" value="ログイン"> --}}
+
+       {{-- クローズ --}}
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       {{-- <button type="button" class="btn btn-secondary btn-close">Close</button> --}}
+  </div>
 </body>
-@endsection
