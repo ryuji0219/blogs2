@@ -8,29 +8,24 @@
         {{ session('login_error') }}
       </div>
     @endif
-      {{-- @if (session('session_error'))
-        <div class="text-primary">
-          {{ session('session_error') }}
-        </div>
-       @endif --}}
 
       <div class="cp_iptxt">
 	      <label class="ef">
 	        <input type="text" id="inputName" name="name" placeholder="ユーザ名" autofocus>
 	      </label>
       </div>
-      {{-- @if ($errors->has('name'))
+      @if ($errors->has('name'))
         <div class="text-danger">
           {{ $errors->first('name') }}
         </div>
-       @endif --}}
+       @endif
 
       <div class="cp_iptxt">
 	      <label class="ef">
            <input type="password" id="inputPassword" name="password" placeholder="パスワード">
  	      </label>
       </div>        
-       {{-- @if ($errors->has('password'))
+       @if ($errors->has('password'))
         <div class="text-danger">
           {{ $errors->first('password') }}
         </div>
@@ -44,7 +39,7 @@
                 <p class="text-primary">
                     {{ session('ok_msg') }}
                 </p>
-       @endif      --}}
+       @endif     
        <br>
       
        {{-- オープン --}}

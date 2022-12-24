@@ -21,11 +21,6 @@ class LoginController extends Controller
         return view('login');
     }
 
-    // public function DoLogin2(LoginFormRequest $request){
-    //     $name = $request['name'];
-    //     //小文字変換 → 暗号化
-    //     $pass = md5(strtolower($request['password']));
-    // }
     // ログイン処理
     public function DoLoginCheck(LoginFormRequest $request){
         $err[] = [];
@@ -40,10 +35,13 @@ class LoginController extends Controller
         // ログインチェック
         if(strtolower($name) == strtolower($DB_User["name"]) && 
             $pass == $DB_User["password"]){
-            return 'OK';
+                // $this->DoLogin($request);
+                return true;
         }
         else{
-            return 'error';
+            return back()-> with([
+                'login_error' => 'ユーザ名とパスワードが一致しません!',
+            ]);
         }    
     }
 
