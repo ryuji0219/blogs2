@@ -26,11 +26,10 @@ $('.modal-login').click(function() {
         name: name,
         password: password
       }  
-    }).done(function(){
+    }).done(function(data){
       console.log('成功');
-   }).fail(function(XMLHttpRequest, textStatus, errorThrown){
-      console.log(XMLHttpRequest.status);
-      console.log(textStatus);
-      console.log(errorThrown);
+      $("#form-signin").removeClass('active');
+   }).fail(function(data){
+      $('#login_error').text(data);
    });
 });

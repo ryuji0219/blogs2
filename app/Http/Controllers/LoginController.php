@@ -39,9 +39,10 @@ class LoginController extends Controller
                 return true;
         }
         else{
-            return back()-> with([
-                'login_error' => 'ユーザ名とパスワードが一致しません!',
-            ]);
+            return false;
+            // return back()-> with([
+            //     'login_error' => 'ユーザ名とパスワードが一致しません!',
+            // ]);
         }    
     }
 
