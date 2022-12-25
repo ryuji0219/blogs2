@@ -148,7 +148,7 @@ class BlogController extends Controller
     public function showBlogCreate() 
     {
         if(!$this->SessionChk()){
-            return redirect(route('Shsession[owLogin'));
+            return redirect(route('showHome'));
         }
        $user=session('user');
 
