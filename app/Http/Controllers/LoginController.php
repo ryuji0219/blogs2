@@ -18,7 +18,7 @@ class LoginController extends Controller
 
     # ログイン画面表示
     public function showLogin(){
-        return view('home');
+        return view('login');
     }
 
     // ログイン処理
@@ -90,7 +90,7 @@ class LoginController extends Controller
             $_SESSION['user']=$DB_User;
  
             session(['user' => $DB_User]);
-            return redirect(route('home'));
+            return redirect(route('showHome'));
    
          }
         else{
@@ -114,7 +114,7 @@ class LoginController extends Controller
         session_destroy();
         session()->flush();
         \Session::flash('logout_msg', 'ログアウトしました');
-        return redirect(route('home'));
+        return redirect(route('showHome'));
     }
 
 }

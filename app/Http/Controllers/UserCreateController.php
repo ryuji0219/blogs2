@@ -38,7 +38,7 @@ class UserCreateController extends Controller
        }
 
        \Session::flash('member_ok', $inputs['name'] . 'さんを会員登録しました');
-        return redirect(route('home'));
+        return redirect(route('showHome'));
    }
 
    // 会員登録チェック
@@ -96,7 +96,7 @@ class UserCreateController extends Controller
      {
         $ybrr = app()->make('App\Http\Controllers\BlogController');
         if(!$ybrr->SessionChk()){
-            return redirect(route('ShowLogin'));
+            return redirect(route('showHome'));
         }
 
         $user = session('user');
@@ -117,7 +117,7 @@ class UserCreateController extends Controller
         session_destroy();
 
          \Session::flash('ok_msg', $user['name'] . 'さんの退会処理を行いました。またのご参加をお待ちしております。');
-         return redirect(route('ShowLogin'));
+         return redirect(route('showHome'));
      }
 
 }

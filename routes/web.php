@@ -27,9 +27,7 @@ Route::post('UserStore', [UserCreateController::class,'exeUserStore'])->name('Us
 Route::get('DeleteUser', [UserCreateController::class,'exeUserDelete'])->name('DeleteUser');
 
 #ブログ一覧画面表示
-Route::get('home', 'App\Http\Controllers\BlogController@showHome')->name('home');
-// Route::post('home2', [BlogController::class,'showHome2'])->name('home2');
-// Route::get('postgmail', [BlogController::class, 'HomeController'])->name('postGmail');
+Route::get('home', 'App\Http\Controllers\BlogController@showHome')->name('showHome');
 
 #プログ検索
 Route::post('BlogSearch', [SearchController::class,'exeBlogSearch'])->name('BlogSearch');

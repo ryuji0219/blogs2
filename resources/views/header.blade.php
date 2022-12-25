@@ -7,7 +7,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="{{route('home')}}" >ブログ一覧 <span class="sr-only"></span></a>
+            <a class="nav-item nav-link" href="{{route('showHome')}}" >ブログ一覧 <span class="sr-only"></span></a>
             @if (isset($user['name']))
                 <a class="nav-item nav-link" href="{{route('BlogCreate')}}">ブログ作成</a>
                 <a class="nav-item nav-link" href="{{route('logout')}}">ログアウト</a>
