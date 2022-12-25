@@ -12,7 +12,7 @@ Route::post('loginCheck', [LoginController::class,'DoLoginCheck'])->name('loginC
 Route::get('/', function () {return view('login');});
 
 #ログイン画面表示
-Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
+// Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
 
 #ログイン操作
 Route::post('home', [LoginController::class,'DoLogin'])->name('login');

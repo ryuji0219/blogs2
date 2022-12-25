@@ -175,7 +175,7 @@ class BlogController extends Controller
         }
 
         \Session::flash('ok_msg', $inputs['title'] . 'のブログを登録しました');
-           return redirect(route('showHome'));
+        return redirect(route('showHome'));
     }
 
       

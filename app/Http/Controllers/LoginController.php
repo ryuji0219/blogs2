@@ -87,6 +87,7 @@ class LoginController extends Controller
             $_SESSION['user']=$DB_User;
 
             session(['user' => $DB_User]);
+            \Session::flash('ok_msg', 'ログインしました。');
             return redirect(route('showHome'));
 
         } catch(\Throwable $e) {

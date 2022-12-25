@@ -37,7 +37,7 @@ class UserCreateController extends Controller
            abort(500);
        }
 
-       \Session::flash('member_ok', $inputs['name'] . 'さんを会員登録しました');
+       \Session::flash('ok_msg', $inputs['name'] . 'さんを会員登録しました');
         return redirect(route('showHome'));
    }
 

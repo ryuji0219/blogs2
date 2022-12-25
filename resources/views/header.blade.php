@@ -12,7 +12,7 @@
                 <a class="nav-item nav-link" href="{{route('BlogCreate')}}">ブログ作成</a>
                 <a class="nav-item nav-link" href="{{route('logout')}}">ログアウト</a>
             @else
-                <a class="nav-item nav-link" href="{{route('ShowLogin')}}">ログイン</a>
+                {{-- <a class="nav-item nav-link" href="{{route('ShowLogin')}}">ログイン</a> --}}
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#loginDsp">ログイン</a>
                 {{-- <a class="nav-item nav-link" href="{{route('UserCreate')}}">会員登録</a> --}}
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#joinMember">会員登録</a>
