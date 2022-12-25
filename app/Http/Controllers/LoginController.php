@@ -31,18 +31,19 @@ class LoginController extends Controller
         if ($DB_User == NULL){
             $res = [ 'result'=> 'NG','errMsg' => '登録されていないユーザ名です!'];
         }
-    
-        // ログインチェック
-        if(strtolower($name) == strtolower($DB_User["name"]) && 
-            $pass == $DB_User["password"]){
-                $res = [ 'result'=> 'OK','errMsg' => ''];
-            // return true;
+        else{    
+            // ログインチェック
+            if(strtolower($name) == strtolower($DB_User["name"]) && 
+                $pass == $DB_User["password"]){
+                    $res = [ 'result'=> 'OK','errMsg' => ''];
+                // return true;
+            }
+            else{
+                $res = [ 'result'=> 'NG',
+                            'errMsg' => 'ユーザ名とパスワードが一致しません!'];
+                // return false;
+            }
         }
-        else{
-            $res = [ 'result'=> 'NG',
-                        'errMsg' => 'ユーザ名とパスワードが一致しません!'];
-            // return false;
-        }    
         return response()->json($res);
     }
 
@@ -53,7 +54,6 @@ class LoginController extends Controller
         //小文字変換 → 暗号化
         $pass = md5(strtolower($request['password']));
 
-
         $DB_User = User::where('name',$name)->first();
         if ($DB_User == NULL){
              return back()-> with([
@@ -61,44 +61,39 @@ class LoginController extends Controller
             ]);
        }
         // ログインチェック
-        if(strtolower($name) == strtolower($DB_User["name"]) && 
+        if(strtolower($name) !== strtolower($DB_User["name"]) && 
                   $pass == $DB_User["password"]){
-          $blogs = Blog::all();
- 
-          $date = date("Y-m-d H:i:s");
- 
-          \DB::beginTransaction();
-          try {
-             // ログイン時間保存
+            return back()-> with([
+                'login_error' => 'ユーザ名とパスワードが一致しません!',
+            ]);        
+        }
+
+        $blogs = Blog::all();
+        $date = date("Y-m-d H:i:s");
+
+        \DB::beginTransaction();
+        try {
+            // ログイン時間保存
             $DB_User->fill([
                 'login_at' => $date,
             ]);
             $DB_User->save();
 
-           \DB::commit();
-            } catch(\Throwable $e) {
-                \DB::rollback();
-                return back()-> with([
-                    'login_error' => '予期せぬエラーが発生しました。',
-                ]);
-            }
-
+            \DB::commit();
             session_start();
             header('Expires: -1');
             header('Cache-Control:');
             header('Pragma:');
             $_SESSION['user']=$DB_User;
- 
+
             session(['user' => $DB_User]);
             return redirect(route('showHome'));
-   
-         }
-        else{
-            // print $DB_User["name"] . " " . $DB_User["password"];
+
+        } catch(\Throwable $e) {
+            \DB::rollback();
             return back()-> with([
-                'login_error' => 'ユーザ名とパスワードが一致しません!',
+                'login_error' => '予期せぬエラーが発生しました。'
             ]);
-                       
         }
     }
 
