@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
- 
+
     # ログイン画面表示
     public function showLogin(){
-        return view('login');
+        return view('home');
     }
 
     // ログイン処理
@@ -29,21 +29,21 @@ class LoginController extends Controller
         $pass = md5(strtolower($request['password']));
         $DB_User = User::where('name',$name)->first();
         if ($DB_User == NULL){
-             return 'error';
-       }
+            $res = [ 'result'=> 'NG','errMsg' => '登録されていないユーザ名です!'];
+        }
     
         // ログインチェック
         if(strtolower($name) == strtolower($DB_User["name"]) && 
             $pass == $DB_User["password"]){
-                // $this->DoLogin($request);
-                return true;
+                $res = [ 'result'=> 'OK','errMsg' => ''];
+            // return true;
         }
         else{
-            return false;
-            // return back()-> with([
-            //     'login_error' => 'ユーザ名とパスワードが一致しません!',
-            // ]);
+            $res = [ 'result'=> 'NG',
+                        'errMsg' => 'ユーザ名とパスワードが一致しません!'];
+            // return false;
         }    
+        return response()->json($res);
     }
 
     // ログイン処理
@@ -106,7 +106,7 @@ class LoginController extends Controller
     public function DoLogout()
     {
         session_start();
-        $_SESSION=array();
+        $_SESSION = [];
         if(isset($_COOKIE[session_name()])==true)
         {
             setcookie(session_name(),'',time()-42000,'/');
@@ -116,5 +116,5 @@ class LoginController extends Controller
         \Session::flash('logout_msg', 'ログアウトしました');
         return redirect(route('home'));
     }
- 
+
 }

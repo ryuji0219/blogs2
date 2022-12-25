@@ -6,19 +6,16 @@ use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
 
-
-Route::get('/', function () {
-  return view('login');
-  // return 'login';
-});
-
-#ログイン画面表示
-// Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
-#ログイン操作
-Route::post('home', [LoginController::class,'DoLogin'])->name('login');
-
+#ログインチェック（モーダル画面）
 Route::post('loginCheck', [LoginController::class,'DoLoginCheck'])->name('loginCheck');
 
+Route::get('/', function () {return view('login');});
+
+#ログイン画面表示
+Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
+
+#ログイン操作
+Route::post('home', [LoginController::class,'DoLogin'])->name('login');
 #ログアウト操作
 Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
 
