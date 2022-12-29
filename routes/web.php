@@ -7,7 +7,9 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
 
 #ログインチェック（モーダル画面）
-Route::post('loginCheck', [LoginController::class,'DoLoginCheck'])->name('loginCheck');
+Route::post('loginCheck', [LoginController::class,'DoLoginCheck']);
+#会員登録チェック（モーダル画面）
+Route::post('userCheck', [UserCreateController::class,'DoUserCheck']);
 
 Route::get('/', function () {return view('login');});
 
@@ -20,7 +22,7 @@ Route::post('home', [LoginController::class,'DoLogin'])->name('login');
 Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
 
 #会員登録画面を表示
-Route::get('UserCreate', [UserCreateController::class,'showUserCreate'])->name('UserCreate');
+// Route::get('UserCreate', [UserCreateController::class,'showUserCreate'])->name('UserCreate');
 #会員登録
 Route::post('UserStore', [UserCreateController::class,'exeUserStore'])->name('UserStore');
 #会員削除

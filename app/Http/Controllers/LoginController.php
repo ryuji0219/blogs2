@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\LoginFormRequest;
-use App\Http\Controllers\BlogController;
 use App\Models\Blog;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BlogController;
 
 class LoginController extends Controller
 {
@@ -21,7 +15,7 @@ class LoginController extends Controller
         return view('login');
     }
 
-    // ログイン処理
+    // ログインチェック
     public function DoLoginCheck(LoginFormRequest $request){
         $err[] = [];
         $name = $request['name'];
@@ -49,10 +43,13 @@ class LoginController extends Controller
 
     // ログイン処理
     public function DoLogin(LoginFormRequest $request){
-        $err[] = [];
         $name = $request['name'];
         //小文字変換 → 暗号化
         $pass = md5(strtolower($request['password']));
+        // $this->LoginAction($name, $pass);
+    // }
+
+    // public function LoginAction($name, $pass){
 
         $DB_User = User::where('name',$name)->first();
         if ($DB_User == NULL){
@@ -89,7 +86,8 @@ class LoginController extends Controller
             session(['user' => $DB_User]);
             \Session::flash('ok_msg', 'ログインしました。');
             return redirect(route('showHome'));
-
+            // $model = new BlogController();
+            // $model->showHome();
         } catch(\Throwable $e) {
             \DB::rollback();
             return back()-> with([

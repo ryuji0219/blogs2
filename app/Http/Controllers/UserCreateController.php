@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\BlogController;
 
 class UserCreateController extends Controller
 {
@@ -14,82 +15,56 @@ class UserCreateController extends Controller
         return view('UserCreate');
     }
 
+   // ユーザ登録チェック
+   public function DoUserCheck(UserCreateRequest $request){ 
+        $inputs = $request->all();
+
+        if(DB::table("users")->where('name', $inputs['newName'])->exists()){
+            $res = [ 'result'=> 'NG','errMsg' => $inputs['newName'] . 'は登録済みです。別のユーザ名を指定して下さい'];
+        }
+        elseif($inputs['newPassword'] !== $inputs['newPassword2']){
+            $res = [ 'result'=> 'NG','errMsg' => '入力パスワードと確認パスワードが一致しません!'];
+        }else{
+            $res = [ 'result'=> 'OK','errMsg' => ''];
+        }
+        return response()->json($res);
+    }
+
    #会員登録する
    public function exeUserStore(UserCreateRequest $request) 
    {
-         // ブログのデータを受け取る
        $inputs = $request->all();
 
-       if(!$this->CheckUseInp($inputs)){
-          return back();
-       }
+    //    if(!$this->CheckUseInp($inputs)){
+    //       return back();
+    //    }
 
        //　パスワード暗号化'
-       $inputs['password']= md5(strtolower($inputs['password']));
-       \DB::beginTransaction();
+       $inputs['password']= md5(strtolower($inputs['newPassword']));
 
-       try {
-           // ブログを登録
-           User::create($inputs);
-           \DB::commit();
-       } catch(\Throwable $e) {
-           \DB::rollback();
-           abort(500);
-       }
+        $newData = [
+            'name' => $inputs['newName'],
+            'password' =>  md5(strtolower($inputs['newPassword'])),
+            'email' =>  md5(strtolower($inputs['newEmail'])),
+        ];
 
-       \Session::flash('ok_msg', $inputs['name'] . 'さんを会員登録しました');
+        \DB::beginTransaction();
+
+        try {
+            // ユーザ登録
+            User::create($newData);
+            \DB::commit();
+        } catch(\Throwable $e) {
+            \DB::rollback();
+            abort(500);
+        }
+
+        \Session::flash('ok_msg', $inputs['newName'] . 'さんを会員登録しました。ログインするとブログの登録などが出来ます。');
+        // $_SESSION['user']=$newData['name'];
+        // session(['user' => $newData['name']]);
         return redirect(route('showHome'));
-   }
-
-   // 会員登録チェック
-   public function CheckUseInp($inputs)
-   {
-       $blnResult = true;
-    //バリデーション
-    //    if(!isset($inputs['name'])){
-    //        \Session::flash('err_name', 'ユーザ名を入力して下さい');
-    //        $blnResult = false;
-    //    }
-
-         if(DB::table("users")->where('name', $inputs['name'])->exists()){
-            \Session::flash('err_member', $inputs['name'] . 'は登録済みです。別のユーザ名を指定して下さい');
-            $blnResult = false;
-       }
-
-    //バリデーション
-    //     if(!isset($inputs['email'])){
-    //        $err[] = 'emailを入力して下さい';
-    //        \Session::flash('err_email', 'emailを入力して下さい');
-    //        $blnResult = false;
-    //     }
-    //    if(!isset($inputs['password'])){
-    //        $err[] = 'パスワードを入力して下さい';
-    //        \Session::flash('err_password', 'パスワードを入力して下さい');
-    //        $blnResult = false;
-    //    }
-
-    //    if (!preg_match('/^[a-z0-9]{3,100}$/i',$inputs['password'])){
-    //         \Session::flash('err_password', 'パスワードは英数字4文字以上で入力して下さい');
-    //         $blnResult = false;
-    //    }
-
-    //    if (preg_match('/^[a-z]+$/',$inputs['password'])){
-    //     \Session::flash('err_password', 'パスワードは英字数字それぞれ1文字以上必須です');
-    //     $blnResult = false;
-    //    }
-
-    //    if (preg_match('/^[0-9]+$/',$inputs['password'])){
-    //         \Session::flash('err_password', 'パスワードは英字数字それぞれ1文字以上必須です');
-    //         $blnResult = false;
-    //    }
-
-       if($inputs['password'] !== $inputs['pass2']){
-           \Session::flash('err_member', '入力パスワードが一致しません。');
-           $blnResult = false;
-       }
-
-       return $blnResult;
-   }
+        
+    }
 
      # 会員削除（退会）
      public function exeUserDelete()
@@ -119,5 +94,4 @@ class UserCreateController extends Controller
          \Session::flash('ok_msg', $user['name'] . 'さんの退会処理を行いました。またのご参加をお待ちしております。');
          return redirect(route('showHome'));
      }
-
 }

@@ -18,6 +18,6 @@
        <br>
       
        <button class="btn btn-primary modal-login">ログイン</button>
-       <button type=submit class="btn btn-secondary" data-dismiss="modal">Close</button>
+       <button class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
     </form>
 </body>
