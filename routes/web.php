@@ -17,9 +17,14 @@ Route::get('/', function () {return view('login');});
 // Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
 
 #ログイン操作
-Route::post('home', [LoginController::class,'DoLogin'])->name('login');
+// Route::post('home', [LoginController::class,'DoLogin'])->name('login');
+Route::post('login', [LoginController::class,'DoLogin'])->name('login');
 #ログアウト操作
 Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
+
+#ブログ一覧画面表示
+// Route::get('home', [BlogController::class,'showHome'])->name('showHome');
+Route::get('/', [BlogController::class,'showHome'])->name('showHome');
 
 #会員登録画面を表示
 // Route::get('UserCreate', [UserCreateController::class,'showUserCreate'])->name('UserCreate');
@@ -27,9 +32,6 @@ Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
 Route::post('UserStore', [UserCreateController::class,'exeUserStore'])->name('UserStore');
 #会員削除
 Route::get('DeleteUser', [UserCreateController::class,'exeUserDelete'])->name('DeleteUser');
-
-#ブログ一覧画面表示
-Route::get('home', 'App\Http\Controllers\BlogController@showHome')->name('showHome');
 
 #プログ検索
 Route::post('BlogSearch', [SearchController::class,'exeBlogSearch'])->name('BlogSearch');
