@@ -56,7 +56,7 @@ class BlogController extends Controller
 
         if (is_null($blog)) {
             \Session::flash('err_msg', 'データがありません。');
-            return redirect(route('home'));
+            return redirect(route('showHome'));
         }
         return view('BlogDetail',compact('user','blog'));
     }
@@ -65,7 +65,7 @@ class BlogController extends Controller
     public function showEdit()
     {
         if(!$this->SessionChk()){
-            return redirect(route('ShowLogin'));
+            return redirect(route('showHome'));
         }
         $blog = $_SESSION['blog'];
         $user=session('user');
@@ -90,7 +90,7 @@ class BlogController extends Controller
         else{
             $this->exeUpdate($inputs);
          }
-         return redirect(route('home'));
+         return redirect(route('showHome'));
    }
    
 
@@ -98,7 +98,7 @@ class BlogController extends Controller
     public function exeUpdate($inputs)
     {
     if(!$this->SessionChk()){
-        return redirect(route('ShowLogin'));
+        return redirect(route('showHome'));
     }
 
 
@@ -121,14 +121,14 @@ class BlogController extends Controller
     }
 
     \Session::flash('ok_msg', $inputs['title'] . ' のブログを更新しました');
-        return redirect(route('home'));
+        return redirect(route('showHome'));
     }
 
      # ブログ削除
     public function exeDelete($inputs)
     {
         if(!$this->SessionChk()){
-            return redirect(route('ShowLogin'));
+            return redirect(route('showHome'));
         }
         \DB::beginTransaction();
         try {
@@ -141,14 +141,14 @@ class BlogController extends Controller
         }
 
         \Session::flash('ok_msg', $inputs['title'] . ' のブログを削除しました');
-        return redirect(route('home'));
+        return redirect(route('showHome'));
     }
 
     # プログ作成画面表示
     public function showBlogCreate() 
     {
         if(!$this->SessionChk()){
-            return redirect(route('Shsession[owLogin'));
+            return redirect(route('showHome'));
         }
        $user=session('user');
 
@@ -159,7 +159,7 @@ class BlogController extends Controller
     public function exeBlogStore(BlogRequest $request) 
     {
         if(!$this->SessionChk()){
-            return redirect(route('ShowLogin'));
+            return redirect(route('showHome'));
         }
         // ブログのデータを受け取る
         $inputs = $request->all();
@@ -175,7 +175,7 @@ class BlogController extends Controller
         }
 
         \Session::flash('ok_msg', $inputs['title'] . 'のブログを登録しました');
-           return redirect(route('home'));
+        return redirect(route('showHome'));
     }
 
       

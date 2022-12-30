@@ -17,17 +17,14 @@
                 <div class="text-danger">
                   {{ session('err_member') }}
                 </div>
-            @elseif (session('login_error'))
-                <div class="text-danger">
-                  {{ session('login_error') }}
-                </div>
+
             @elseif (session('logout_msg'))
                 <p class="text-danger">
                     {{ session('logout_msg') }}
                 </p>
-            @elseif (session('member_ok'))
+            @elseif (session('ok_msg'))
                 <div class="text-primary">
-                    {{ session('member_ok') }}
+                    {{ session('ok_msg') }}
                 </div>
             @elseif (session('session_error'))
                 <div class="text-primary">
@@ -86,11 +83,7 @@
                     {{ session('err_msg') }}
                 </p>
             @endif
-            @if (session('ok_msg'))
-                <p class="text-primary">
-                    {{ session('ok_msg') }}
-                </p>
-            @endif            
+          
              {{-- 一覧表示  --}}
             <table class="table table-striped">
                 <tr>

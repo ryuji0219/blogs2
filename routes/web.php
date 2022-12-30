@@ -6,33 +6,32 @@ use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
 
+#ログインチェック（モーダル画面）
+Route::post('loginCheck', [LoginController::class,'DoLoginCheck']);
+#会員登録チェック（モーダル画面）
+Route::post('userCheck', [UserCreateController::class,'DoUserCheck']);
 
-Route::get('/', function () {
-  return view('login');
-  // return 'login';
-});
+Route::get('/', function () {return view('login');});
 
 #ログイン画面表示
 // Route::get('login', [LoginController::class,'showLogin'])->name('ShowLogin');
+
 #ログイン操作
-Route::post('home', [LoginController::class,'DoLogin'])->name('login');
-
-Route::post('loginCheck', [LoginController::class,'DoLoginCheck'])->name('loginCheck');
-
+// Route::post('home', [LoginController::class,'DoLogin'])->name('login');
+Route::post('login', [LoginController::class,'DoLogin'])->name('login');
 #ログアウト操作
 Route::get('logout', [LoginController::class,'DoLogout'])->name('logout');
 
+#ブログ一覧画面表示
+// Route::get('home', [BlogController::class,'showHome'])->name('showHome');
+Route::get('/', [BlogController::class,'showHome'])->name('showHome');
+
 #会員登録画面を表示
-Route::get('UserCreate', [UserCreateController::class,'showUserCreate'])->name('UserCreate');
+// Route::get('UserCreate', [UserCreateController::class,'showUserCreate'])->name('UserCreate');
 #会員登録
 Route::post('UserStore', [UserCreateController::class,'exeUserStore'])->name('UserStore');
 #会員削除
 Route::get('DeleteUser', [UserCreateController::class,'exeUserDelete'])->name('DeleteUser');
-
-#ブログ一覧画面表示
-Route::get('home', 'App\Http\Controllers\BlogController@showHome')->name('home');
-// Route::post('home2', [BlogController::class,'showHome2'])->name('home2');
-// Route::get('postgmail', [BlogController::class, 'HomeController'])->name('postGmail');
 
 #プログ検索
 Route::post('BlogSearch', [SearchController::class,'exeBlogSearch'])->name('BlogSearch');

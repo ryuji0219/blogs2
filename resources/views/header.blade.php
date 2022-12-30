@@ -7,17 +7,31 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="{{route('home')}}" >ブログ一覧 <span class="sr-only"></span></a>
+            <a class="nav-item nav-link" href="{{route('showHome')}}" >ブログ一覧 <span class="sr-only"></span></a>
             @if (isset($user['name']))
                 <a class="nav-item nav-link" href="{{route('BlogCreate')}}">ブログ作成</a>
+                {{-- <a class="nav-item nav-link btn" data-toggle="modal" data-target="#blogCreate">ブログ作成(新)</a> --}}
                 <a class="nav-item nav-link" href="{{route('logout')}}">ログアウト</a>
             @else
+                {{-- 旧ログイン --}}
                 {{-- <a class="nav-item nav-link" href="{{route('ShowLogin')}}">ログイン</a> --}}
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#loginDsp">ログイン</a>
-                {{-- <a class="nav-item nav-link" href="{{route('UserCreate')}}">会員登録</a> --}}
+                {{-- 旧会員登録 --}}
+                {{-- <a class="nav-item nav-link" href="{{route('UserCreate')}}">会員登録（元）</a> --}}
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#joinMember">会員登録</a>
             @endif
        </div>
+    </div>
+
+    {{-- ブログ作成 --}}
+    <div class="modal fade" id="blogCreate">
+        <div class="modal-dialog modal-dialog-centered"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @include('blogCreateMordal')
+                </div>
+            </div>
+        </div>
     </div>
 
     {{-- ログイン --}}
@@ -31,7 +45,6 @@
             </div>
         </div>
     </div>
-
 
     {{-- 会員登録 --}}
     <div class="modal fade" id="joinMember">

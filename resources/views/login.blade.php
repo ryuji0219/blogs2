@@ -2,7 +2,10 @@
 @section('title', 'ログイン画面')
 @section('content')
 <body>
-  <form class="form-signin" method="POST" action="{{route('login')}}">
+
+
+  {{-- -------------------------- --}}
+  <form class="form-login" method="POST" action="{{route('login')}}">
   @csrf
     <h1 class="h3 mb-3 font-weight-normal">ログイン画面</h1>
 

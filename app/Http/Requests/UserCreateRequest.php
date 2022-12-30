@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserCreateRequest extends FormRequest
 {
@@ -24,20 +26,29 @@ class UserCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:12',
-            'password' => 'required',
-            'email' => 'required',
-            'pass2' => 'required'
+            'newName' => 'required|max:12|min:3',
+            'newPassword' => 'required|min:3',
+            'newEmail' => 'required',
+            'newPassword2' => 'required'
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'ユーザ名',
-            'password' => 'パスワード',
-            'email' => 'Eメール',
-            'pass2' => '確認用パスワード'
+            'newName' => 'ユーザ名',
+            'newPassword' => 'パスワード',
+            'newEmail' => 'Eメール',
+            'newPassword2' => '確認用パスワード'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = collect($validator->errors());
+        $messages = $errors->map(function($error_messages){
+            return $error_messages[0];
+        });
+        throw new HttpResponseException(response($messages,422));
     }
 }

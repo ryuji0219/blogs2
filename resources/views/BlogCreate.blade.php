@@ -42,7 +42,7 @@
                 @endif
             </div>
             <div class="mt-5">
-                <a class="btn btn-secondary" href="{{route('home')}}">キャンセル</a>
+                <a class="btn btn-secondary" href="{{route('showHome')}}">キャンセル</a>
                 <button type="submit" class="btn btn-primary">投稿する</button>
             </div>
         </form>

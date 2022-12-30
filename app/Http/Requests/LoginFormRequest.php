@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class LoginFormRequest extends FormRequest
 {
@@ -35,5 +37,16 @@ class LoginFormRequest extends FormRequest
             'name' => 'ユーザ名',
             'password' => 'パスワード'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = collect($validator->errors());
+        $messages = $errors->map(function($error_messages){
+
+            return $error_messages[0];
+
+        });
+        throw new HttpResponseException(response($messages,422));
     }
 }

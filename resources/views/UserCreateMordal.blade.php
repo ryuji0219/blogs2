@@ -3,86 +3,35 @@
     <form method="POST" action="{{ route('UserStore') }}" onSubmit="return checkSubmit()">
         @csrf
         <h1 class="h3 mb-3 font-weight-normal">会員登録フォーム</h1>
-        {{-- @if ($errors->any())
-        <div class="alert text-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                  {{ $error }} . <br>
-                @endforeach 
-            </ul>
-        </div>
-        @endif --}}
+        <div class="err_msg"></div>
 
         <div class="cp_iptxt">
 	      <label class="ef">
-	        <input type="text" name="name" placeholder="ユーザ名"  autofocus value={{old('name')}}>
+	        <input type="text" name="newName" placeholder="ユーザ名（必須）"  autofocus value={{old('newName')}}>
 	      </label>
         </div>
 
-        {{-- バリデーション --}}
-        {{-- @if ($errors->has('name'))
-        <div class="text-danger">
-            {{ $errors->first('name') }}
-        </div>
-        @endif
-        @if (session('err_name'))
-        <div class="text-danger">
-            {{ session('err_name') }}
-            </div>
-        @endif --}}
+        <div class="cp_iptxt">
+	      <label class="ef">
+           <input type="email" name="newEmail" placeholder="Eメール（必須）" value={{old('newEmail')}} >
+ 	      </label>
+        </div>  
 
         <div class="cp_iptxt">
 	      <label class="ef">
-           <input type="email" name="email" placeholder="email" value={{old('email')}} >
- 	      </label>
-        </div>  
-        {{-- @if (session('err_email'))
-            <div class="text-danger">
-            {{ session('err_email') }}
-            </div>
-        @endif
-       @if ($errors->has('email'))
-            <div class="text-danger">
-                {{ $errors->first('email') }}
-            </div>
-        @endif --}}
-        
-        <div class="cp_iptxt">
-	      <label class="ef">
-           <input type="password" name="password" placeholder="パスワード" value={{old('password')}}>
+           <input type="password" name="newPassword" placeholder="パスワード（必須）">
  	      </label>
         </div>          
 
-        {{-- @if (session('err_password'))
-            <div class="text-danger">
-            {{ session('err_password') }}
-            </div>
-        @endif
-        @if ($errors->has('password'))
-            <div class="text-danger">
-                {{ $errors->first('password') }}
-            </div>
-        @endif --}}
-        
         <div class="cp_iptxt">
 	      <label class="ef">
-           <input type="password" name="pass2" placeholder="パスワード確認用">
+           <input type="password" name="newPassword2" placeholder="パスワード確認用（必須）">
  	      </label>
         </div>  
-        {{-- @if (session('err_pas2'))
-            <div class="text-danger">
-            {{ session('err_pas2') }}
-            </div>
-        @endif
-        @if ($errors->has('pass2'))
-            <div class="text-danger">
-                {{ $errors->first('pass2') }}
-            </div>
-        @endif --}}
-        
+        <br>
         <p>
-            <button type="submit" class="btn btn-primary" >新規登録</button>　
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary user-create" >新規登録</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
         </p>
     </form>
     </div>
