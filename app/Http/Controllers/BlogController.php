@@ -25,12 +25,15 @@ class BlogController extends Controller
         }
         $query = DB::table('blogs as b')
            ->Join('users as u', 'b.user_id', '=', 'u.id')
-             ->select('b.id','b.title' ,'b.content','u.name','b.updated_at')
+           ->where('u.invalid','!=',1)
+           ->where('b.invalid','!=',1)
+             ->select('b.id','b.title' ,'b.content','b.user_id','u.name','b.updated_at')
              ->orderby('b.updated_at','DESC');
 
        $query_all = $query->get();
  
         $blogs = $query_all->paginate(PAGE_NUM);
+
         return view::make('BlogList',['user'=>$user,'blogs'=>$blogs]);
     }
 
@@ -48,7 +51,7 @@ class BlogController extends Controller
 
         $blog = DB::table('blogs as b')
            ->Join('users as u', 'b.user_id', '=', 'u.id')
-           ->select('b.id','b.title','b.content','u.name', 'b.user_id', 'b.updated_at')
+           ->select('b.id','b.title','b.content','u.name', 'b.user_id', 'b.updated_at', 'b.invalid')
            ->where('b.id', '=', $b_id)
            ->first(); 
         
@@ -58,7 +61,8 @@ class BlogController extends Controller
             \Session::flash('err_msg', 'データがありません。');
             return redirect(route('showHome'));
         }
-        return view('BlogDetail',compact('user','blog'));
+        // return view('BlogDetail',compact('user','blog'));
+        return view::make('BlogDetail',['user'=>$user,'blog'=>$blog]);
     }
 
     //  ブログ編集フォーム
@@ -75,7 +79,8 @@ class BlogController extends Controller
             return redirect(route('blogs'));
         }
 
-        return view('BlogEdit',compact('user', 'blog'));
+        // return view('BlogEdit',compact('user', 'blog'));
+        return view::make('BlogEdit',['user'=>$user,'blog'=>$blog]);
     }
     
     #　プログ更新 or 削除
@@ -97,30 +102,28 @@ class BlogController extends Controller
     # ブログ更新
     public function exeUpdate($inputs)
     {
-    if(!$this->SessionChk()){
-        return redirect(route('showHome'));
-    }
+        if(!$this->SessionChk()){
+            return redirect(route('showHome'));
+        }
 
+        \DB::beginTransaction();
+        try {
 
-    \DB::beginTransaction();
-    try {
+            // ブログを更新
+            $blog = Blog::find($inputs['id']);
+            $blog->fill([
+                'title' => $inputs['title'],
+                'content' => $inputs['content'],
+                'updated_at' => now()
+            ]);
+            $blog->update();
+            \DB::commit();
+        } catch(\Throwable $e) {
+            \DB::rollback();
+            abort(500);
+        }
 
-        // ブログを更新
-        $blog = Blog::find($inputs['id']);
-        $blog->fill([
-            'title' => $inputs['title'],
-            'content' => $inputs['content'],
-            'updated_at' => now()
-        ]);
-
-        $blog->save();
-        \DB::commit();
-    } catch(\Throwable $e) {
-        \DB::rollback();
-        abort(500);
-    }
-
-    \Session::flash('ok_msg', $inputs['title'] . ' のブログを更新しました');
+        \Session::flash('ok_msg', $inputs['title'] . ' のブログを更新しました');
         return redirect(route('showHome'));
     }
 
@@ -133,7 +136,15 @@ class BlogController extends Controller
         \DB::beginTransaction();
         try {
             // ブログを削除
-            Blog::destroy($inputs['id']);
+            $blog = Blog::find($inputs['id']);
+            $blog->fill([
+                'title' => $inputs['title'],
+                'content' => $inputs['content'],
+                'invalid' => '1',
+                'updated_at' => now()
+            ]);
+            $blog->save();
+            // Blog::destroy($inputs['id']);
             \DB::commit();
         } catch(\Throwable $e) {
             \DB::rollback();

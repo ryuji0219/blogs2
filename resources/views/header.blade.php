@@ -23,16 +23,6 @@
        </div>
     </div>
 
-    {{-- ブログ作成 --}}
-    <div class="modal fade" id="blogCreate">
-        <div class="modal-dialog modal-dialog-centered"  role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    @include('blogCreateMordal')
-                </div>
-            </div>
-        </div>
-    </div>
 
     {{-- ログイン --}}
     <div class="modal fade" id="loginDsp">

@@ -6,7 +6,7 @@
     <div class="col-md-8 col-md-offset-2">
         @if (isset($user['id']))
             <p2>ユーザ名：{{ $user["name"] }}</p2>
-            <p3>ログイン時間：{{ $user["login_at"] }}</p3>
+            {{-- <p3>ログイン時間：{{ $user["login_at"] }}</p3> --}}
         @else
             <p2>ゲストさん</p2>
         @endif

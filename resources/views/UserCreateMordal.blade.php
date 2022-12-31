@@ -3,7 +3,7 @@
     <form method="POST" action="{{ route('UserStore') }}" onSubmit="return checkSubmit()">
         @csrf
         <h1 class="h3 mb-3 font-weight-normal">会員登録フォーム</h1>
-        <div class="err_msg"></div>
+        <div class="err_msg_user"></div>
 
         <div class="cp_iptxt">
 	      <label class="ef">

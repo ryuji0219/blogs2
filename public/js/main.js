@@ -3,7 +3,7 @@ $('.user-create').click(function() {
   const newEmail     = $('input[name="newEmail"]').val();
   const newPassword     = $('input[name="newPassword"]').val();
   const newPassword2     = $('input[name="newPassword2"]').val();
-  $('.err_msg').empty();
+  $('.err_msg_user').empty();
   let ret = false;
   $.ajaxSetup({
     headers: {
@@ -26,17 +26,17 @@ $('.user-create').click(function() {
       ret = true;
     }
     else if(res.result == 'NG'){
-      $('.err_msg').append('<div class="text-danger">' + res.errMsg + '</div>');
+      $('.err_msg_user').append('<div class="text-danger">' + res.errMsg + '</div>');
       ret = false;
     }
     else{
-      $('.err_msg').append('<div class="text-danger">システムエラー</div>');
+      $('.err_msg_user').append('<div class="text-danger">システムエラー</div>');
       ret = false;
     }
   }).fail(function(res){
     let errors = res.responseJSON;
     Object.keys(errors).forEach(function (key){
-        $('.err_msg').append( '<div class="text-danger">' + errors[key] + '</div>');
+        $('.err_msg_user').append( '<div class="text-danger">' + errors[key] + '</div>');
     });
     ret = false;
   });
@@ -47,7 +47,7 @@ $('.user-create').click(function() {
 $('.modal-login').click(function() {
   const name     = $('input[name="name"]').val();
   const password     = $('input[name="password"]').val();
-  $('.err_msg').empty();
+  $('.err_msg_login').empty();
   let ret = false;
   $.ajaxSetup({
     headers: {
@@ -68,17 +68,17 @@ $('.modal-login').click(function() {
       ret = true;
     }
     else if(res.result == 'NG'){
-      $('.err_msg').append('<div class="text-danger">' + res.errMsg + '</div>');
+      $('.err_msg_login').append('<div class="text-danger">' + res.errMsg + '</div>');
       ret = false;
     }
     else{
-      $('.err_msg').append('<div class="text-danger">システムエラー</div>');
+      $('.err_msg_login').append('<div class="text-danger">システムエラー</div>');
       ret = false;
     }
   }).fail(function(res){
     let errors = res.responseJSON;
     Object.keys(errors).forEach(function (key){
-        $('.err_msg').append( '<div class="text-danger">' + errors[key] + '</div>');
+        $('.err_msg_login').append( '<div class="text-danger">' + errors[key] + '</div>');
     });
     ret = false;
   });

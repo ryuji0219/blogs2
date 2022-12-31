@@ -6,7 +6,7 @@
     <div class="col-md-8 col-md-offset-2">
         <h1>ブログ編集画面</h1>
         <p2>ユーザ名：{{ $user["name"] }}</p2>
-        <p3>ログイン時間：{{ $user["login_at"] }}</p3>
+        {{-- <p3>ログイン時間：{{ $user["login_at"] }}</p3> --}}
 
         <p>　作成者：{{$blog->name}}</p>
         <p>更新日時：{{substr($blog->updated_at,0,19) }}</p>

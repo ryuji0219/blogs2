@@ -21,7 +21,9 @@ class LoginController extends Controller
         $name = $request['name'];
         //小文字変換 → 暗号化
         $pass = md5(strtolower($request['password']));
-        $DB_User = User::where('name',$name)->first();
+        $DB_User = User::where('name',$name)
+                    ->where('invalid','!=',1)
+                    ->first();
         if ($DB_User == NULL){
             $res = [ 'result'=> 'NG','errMsg' => '登録されていないユーザ名です!'];
         }
@@ -46,11 +48,6 @@ class LoginController extends Controller
         $name = $request['name'];
         //小文字変換 → 暗号化
         $pass = md5(strtolower($request['password']));
-        // $this->LoginAction($name, $pass);
-    // }
-
-    // public function LoginAction($name, $pass){
-
         $DB_User = User::where('name',$name)->first();
         if ($DB_User == NULL){
              return back()-> with([

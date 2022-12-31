@@ -19,15 +19,16 @@ class UserCreateController extends Controller
    public function DoUserCheck(UserCreateRequest $request){ 
         $inputs = $request->all();
 
-        if(DB::table("users")->where('name', $inputs['newName'])->exists()){
-            $res = [ 'result'=> 'NG','errMsg' => $inputs['newName'] . 'は登録済みです。別のユーザ名を指定して下さい'];
+        if(DB::table("users")->where('name', $inputs['newName'])
+                             ->where('invalid','!=',1)->exists()){
+            $res_user = [ 'result'=> 'NG','errMsg' => $inputs['newName'] . 'は登録済みです。別のユーザ名を指定して下さい'];
         }
         elseif($inputs['newPassword'] !== $inputs['newPassword2']){
-            $res = [ 'result'=> 'NG','errMsg' => '入力パスワードと確認パスワードが一致しません!'];
+            $res_user = [ 'result'=> 'NG','errMsg' => '入力パスワードと確認パスワードが一致しません!'];
         }else{
-            $res = [ 'result'=> 'OK','errMsg' => ''];
+            $res_user = [ 'result'=> 'OK','errMsg' => ''];
         }
-        return response()->json($res);
+        return response()->json($res_user);
     }
 
    #会員登録する
@@ -45,7 +46,7 @@ class UserCreateController extends Controller
         $newData = [
             'name' => $inputs['newName'],
             'password' =>  md5(strtolower($inputs['newPassword'])),
-            'email' =>  md5(strtolower($inputs['newEmail'])),
+            'email' =>  $inputs['newEmail']
         ];
 
         \DB::beginTransaction();
@@ -75,10 +76,18 @@ class UserCreateController extends Controller
         }
 
         $user = session('user');
- 
+
+        \DB::beginTransaction();
         try {
-             // ブログを削除
-             User::destroy($user['id']);
+             // ユーザの削除フラグON
+            //  User::destroy($user['id']);
+            $user = User::where('id',$user->id)->first();
+            $user->fill([
+                'invalid' => 1,
+                'updated_at' => now()
+            ]);
+            $user->update();
+            \DB::commit();
           } catch(\Throwable $e) {
              abort(500);
          }
