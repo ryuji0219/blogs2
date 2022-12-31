@@ -7,13 +7,13 @@
 
         <div class="cp_iptxt">
 	      <label class="ef">
-	        <input type="text" name="newName" placeholder="ユーザ名（必須）"  autofocus value={{old('newName')}}>
+	        <input type="text" name="newName" placeholder="ユーザ名（必須）" autofocus>
 	      </label>
         </div>
 
         <div class="cp_iptxt">
 	      <label class="ef">
-           <input type="email" name="newEmail" placeholder="Eメール（必須）" value={{old('newEmail')}} >
+           <input type="email" name="newEmail" placeholder="Eメール（必須）">
  	      </label>
         </div>  
 
