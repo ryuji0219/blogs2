@@ -95,7 +95,7 @@
                 @foreach($blogs as  $blog)
                 <tr>
                     <td>{{ $loop->index + 1 + 10*($blogs->currentPage()-1)}}</td>
-                    <td><a href="showDetail/{{$blog->id}}">{{ $blog->title  }}</a></td>
+                    <td><a href="showDetail/{{$blog->id}}">{{ $blog->title}}</a></td>
                     <td>{{ $blog->name}}</td>
                     <td>{{ substr($blog->updated_at,0,19) }}</td>
                 </tr>

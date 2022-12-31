@@ -14,6 +14,8 @@ class Blog extends Model
     [
         'title',
         'content',
-        'user_id'
+        'user_id',
+        'invalid',
+        'update_at',
     ];
 }
