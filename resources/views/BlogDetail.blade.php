@@ -21,7 +21,7 @@
                 @if(isset($user['id']) && $blog->user_id == $user->id)
                     <input type="hidden" name="id" value="{{ $blog->id }}">
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
-                    <input id="title" name="title" class="form-control" value="{{ $blog->title }}" type="text">
+                    <input name="title" class="form-control" value="{{ $blog->title }}" type="text">
                 @else
                     <textarea cols="90" rows="1" readonly>{{ $blog->title }}</textarea>
                 @endif
@@ -31,7 +31,7 @@
             <label>
                 本文<br>
                 @if(isset($user['id']) && $blog->user_id == $user->id)
-                    <textarea id="content" name="content" class="form-control"
+                    <textarea name="content" class="form-control"
                         cols="90" rows="6" >{{ $blog->content }}</textarea>
                 @else
                     <textarea cols="90" rows="6" readonly>{{ $blog->content }}</textarea>
