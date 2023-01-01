@@ -2,7 +2,17 @@ form *{
   vertical-align: top;
 }
 
-/* モーダルウィンドウ用 */
+/* ログインモーダルウィンドウ用 */
+#modal-content-login{
+	width:50%;
+	margin:1.5em auto 0;
+	padding:10px 20px;
+	border:2px solid #aaa;
+	background:#fff;
+	z-index:2;
+}
+
+/* ユーザ登録モーダルウィンドウ用 */
 #modal-content{
 	width:50%;
 	margin:1.5em auto 0;
@@ -56,9 +66,25 @@ p3{
 	background-color: rgb(166, 255, 0); 
 }
 
+/* Main画面検索ボタン */
 .search_button {
 	background-color: yellow; 
 	right:1000px;
+	margin-left:3px;
+}
+
+/* 郵便番号検索ボタン */
+.address_search_button {
+	background-color: yellow; 
+	margin-left:70px;
+}
+
+.modal-login {
+	margin-left:110px;
+}
+
+.user-create {
+	margin-left:130px;
 }
 
 .button_place {
@@ -73,22 +99,23 @@ p3{
 .cp_iptxt {
 	position: relative;
 	width: 1000px;
-	/* margin-left: 20px; */
-	margin-top: 20px;
+	margin-left: 20px;
+	margin-bottom: 10px;
 }
-.cp_iptxt input[type='text'] ,input[type="password"] ,input[type="email"]{
+/* .cp_iptxt input[type='text'] ,input[type="password"] ,input[type="email"]{
 	font: 15px/24px sans-serif;
 	box-sizing: border-box;
-	width: 200%;
+	width: 108%;
 	padding: 0.3em;
 	transition: 0.3s;
 	letter-spacing: 1px;
 	color: #0a0a0a;
 	border: 1px solid #1b2538;
 	border-radius: 4px;
-}
-.ef input[type='text']:focus,input[type="password"] ,input[type="email"] {
+} */
+.ef input[type='text'],input[type="password"] ,input[type="email"] {
 	border: 1px skyblue;
 	outline: none;
-	box-shadow: 0 0 5px 1px rgba(170, 56, 60, 0.5);
+	box-shadow: 0 0 5px 1px rgb(176, 56, 60,0.5);
+	margin-bottom: 10px;
 }

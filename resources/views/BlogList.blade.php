@@ -65,7 +65,7 @@
                     </select>
 
                     <input type="text" name="search_text" placeholder="キーワードを入力" value="{{$search['text']}}" 
-                        class="search_text"><input type="submit" class="search_button" value="検索">
+                        class="search_text"><Button class="search_button">検索</Button>
                 {{-- 通常時の表示 --}}
                 @else
                     <select name="search_option" class="search_select">

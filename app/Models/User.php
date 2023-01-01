@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'postCode',
+        'address1',
+        'address2',
         'invalid',
         'update_at',
     ];

@@ -22,8 +22,13 @@
                     <input type="hidden" name="id" value="{{ $blog->id }}">
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <input name="title" class="form-control" value="{{ $blog->title }}" type="text">
-                @else
-                    <textarea cols="90" rows="1" readonly>{{ $blog->title }}</textarea>
+                    @if ($errors->has('title'))
+                        <div class="text-danger">
+                            {{ $errors->first('title') }}
+                        </div>
+                    @endif  
+                 @else
+                    <textarea cols="30" rows="1" readonly>{{ $blog->title }}</textarea>
                 @endif
             </label>
         </p>
@@ -33,6 +38,11 @@
                 @if(isset($user['id']) && $blog->user_id == $user->id)
                     <textarea name="content" class="form-control"
                         cols="90" rows="6" >{{ $blog->content }}</textarea>
+                    @if ($errors->has('content'))
+                        <div class="text-danger">
+                            {{ $errors->first('content') }}
+                        </div>
+                    @endif
                 @else
                     <textarea cols="90" rows="6" readonly>{{ $blog->content }}</textarea>
                 @endif
