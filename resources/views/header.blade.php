@@ -2,8 +2,8 @@
     <div class="navbar-brand">ブログ</div>
     <div class="collapse navbar-collapse">
         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{route('showHome')}}" >ブログ一覧 <span class="sr-only"></span></a>
             @if (isset($user['name']))
-                <a class="nav-item nav-link" href="{{route('showHome')}}" >ブログ一覧 <span class="sr-only"></span></a>
                 <a class="nav-item nav-link" href="{{route('BlogCreate')}}">ブログ作成</a>
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#joinMember">{{$dsp['title']}}</a>
                 <a class="nav-item nav-link" href="{{route('logout')}}">ログアウト</a>

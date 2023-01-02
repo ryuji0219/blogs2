@@ -24,12 +24,28 @@ class UserCreateController extends Controller
                              ->where('invalid','!=',1)->exists()){
             $errMsg = $inputs['newName'] . 'は登録済みです。別のユーザ名を指定して下さい。<br>';
         }
+        if($inputs['user_id'] != 0 && DB::table("users")->where('name', $inputs['newName'])
+                            ->where('id','!=',$inputs['user_id'])
+                             ->where('invalid','!=',1)->exists()){
+            $errMsg = $inputs['newName'] . 'は登録済みです。別のユーザ名を指定して下さい。<br>';
+        }
         if($inputs['newPassword'] !== $inputs['newPassword2']){
             $errMsg .= '入力パスワードと確認パスワードが一致しません。<br>';
         }
 
-        if (!empty($inputs['postCode']) && !preg_match("/^\d{3}-\d{4}$/",$inputs['postCode']) && !preg_match("/^\d{3}\d{4}$/",$inputs['postCode'])) {
-            $errMsg .= '郵便番号は「123-4567」の形式で入力してください。';
+        if (!empty($inputs['postCode'])){
+            if(!preg_match("/^\d{3}-\d{4}$/",$inputs['postCode']) && !preg_match("/^\d{3}\d{4}$/",$inputs['postCode'])) {
+                $errMsg .= '郵便番号は「123-4567」の形式で入力してください。';
+            }
+            else{
+                $url = "http://zipcloud.ibsnet.co.jp/api/search?zipcode=". $inputs['postCode'];
+                $json = file_get_contents($url);
+                $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+                $addressData = json_decode($json,true);
+                if (empty($addressData['results'])){
+                    $errMsg .= '入力された郵便番号に該当する住所は見つかりませんでした。';
+                }
+            }            
         }
 
         if (empty($errMsg)){
@@ -44,7 +60,7 @@ class UserCreateController extends Controller
         return response()->json($res_user);
     }
 
-   #会員登録する
+   #会員登録/更新する
    public function exeUserStore(UserCreateRequest $request) 
    {
        $inputs = $request->all();
@@ -63,35 +79,34 @@ class UserCreateController extends Controller
             'postCode' =>  $inputs['postCode'],
             'address1' =>  $inputs['address1'],
             'address2' =>  $inputs['address2'],
+            'invalid' => 0,
             'updated_at' => now()
         ];
 
         \DB::beginTransaction();
 
         try {
-            if ($inputs['user_id'] === 0){
-            // ユーザ登録
-            User::create($newData);
+            if ($inputs['user_id'] == 0){
+                // ユーザ登録
+                User::create($newData);
             }
             else{
                 $user = User::find($inputs['user_id']);
                 $user->fill($newData);
+                $user->update();
             }
-            $user->update();
             \DB::commit();
         } catch(\Throwable $e) {
             \DB::rollback();
             abort(500);
         }
 
-        if ($inputs['user_id'] === 0){
+        if ($inputs['user_id'] == 0){
             \Session::flash('ok_msg', $inputs['newName'] . 'さんを会員登録しました。ログインするとブログの登録などが出来ます。');
         }
         else{
             \Session::flash('ok_msg', $inputs['newName'] . 'さんの会員情報を更新しました。');
         }
-            // $_SESSION['user']=$newData['name'];
-        // session(['user' => $newData['name']]);
         return redirect(route('showHome'));
         
     }

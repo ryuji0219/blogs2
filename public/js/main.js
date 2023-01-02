@@ -6,6 +6,7 @@ $('.user-create').click(function() {
   const newPassword     = $('input[name="newPassword"]').val();
   const newPassword2     = $('input[name="newPassword2"]').val();
   const postCode     = $('input[name="postCode"]').val();
+  $('.err_msg').empty();
   $('.err_msg_user').empty();
   let ret = false;
   $.ajaxSetup({
@@ -53,6 +54,7 @@ $('.user-create').click(function() {
 $('.modal-login').click(function() {
   const name     = $('input[name="name"]').val();
   const password     = $('input[name="password"]').val();
+  $('.err_msg').empty();
   $('.err_msg_login').empty();
   let ret = false;
   $.ajaxSetup({
@@ -95,6 +97,7 @@ $('.modal-login').click(function() {
 //住所検索
 $('.address-search').click(function() {
   const postCode     = $('input[name="postCode"]').val();
+  $('.err_msg').empty();
   $('.err_msg_address').empty();
   let ret = false;
 
@@ -127,4 +130,9 @@ $('.address-search').click(function() {
   });
  
   return false;
+});
+
+$('.clear_search_button').click(function() {
+  $('input[name="search_text"]').val("");
+  return false;  
 });

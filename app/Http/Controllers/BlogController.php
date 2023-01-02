@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\BlogRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\Blog;
+use App\Models\User;
 
 const SESSION_OUT_MSG = 'ログイン操作をして下さい';
 const PAGE_NUM=10;    //1ページあたりの表示数
@@ -24,6 +25,8 @@ class BlogController extends Controller
         else{
             $user=session('user');
             $dsp = ['title' => "会員情報",'btn' => '更新'];
+            $user = User::where('id',$user['id'])->first();
+            session(['user' => $user]);
         }
         $query = DB::table('blogs as b')
            ->Join('users as u', 'b.user_id', '=', 'u.id')
@@ -31,6 +34,7 @@ class BlogController extends Controller
            ->where('b.invalid','!=',1)
              ->select('b.id','b.title' ,'b.content','b.user_id','u.name','b.updated_at')
              ->orderby('b.updated_at','DESC');
+
 
        $query_all = $query->get(); 
         $blogs = $query_all->paginate(PAGE_NUM);
