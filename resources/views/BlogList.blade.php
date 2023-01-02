@@ -76,6 +76,7 @@
                     <input type="text" name="search_text" placeholder="キーワードを入力" value="{{old('search_text')}}" 
                         class="search_text"><input type="submit" class="search_button" value="検索">
                @endif
+               <Button class="clear_search_button">クリア</Button>
             </form>
             <br><br>
             @if (session('err_msg'))

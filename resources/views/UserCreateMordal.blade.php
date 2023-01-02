@@ -1,5 +1,5 @@
 <?php
-    if ($user['id'] != 0){
+    if (!empty($user['id']) && $user['id'] != 0){
         $user_id = $user['id'];
         $name = $user['name'];
         $email = $user['email'];
@@ -17,7 +17,6 @@
         $address1 ="";
         $address2 ="";
     }
-
 ?>
 <body>
     <div class="container">
