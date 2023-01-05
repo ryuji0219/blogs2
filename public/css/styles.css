@@ -96,12 +96,12 @@ p3{
 	/* margin-left: 20px; */
 }
 
-.cp_iptxt {
+/* .cp_iptxt {
 	position: relative;
 	width: 1000px;
 	margin-left: 20px;
 	margin-bottom: 10px;
-}
+} */
 /* .cp_iptxt input[type='text'] ,input[type="password"] ,input[type="email"]{
 	font: 15px/24px sans-serif;
 	box-sizing: border-box;
@@ -118,4 +118,8 @@ p3{
 	outline: none;
 	box-shadow: 0 0 5px 1px rgb(176, 56, 60,0.5);
 	margin-bottom: 10px;
+}
+
+.nav{
+	color:white;
 }

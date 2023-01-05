@@ -23,8 +23,6 @@
     <form method="POST" action="{{ route('UserStore') }}" onSubmit="return checkSubmit()">
         @csrf
         <div class="err_msg_user"></div>
-
-        
         <div class="row">
             <p class="col-sm-2">ユーザ名<p>
             <label class="ef col-sm-6">
@@ -54,7 +52,7 @@
         </div>  
 
         <div class="row">
-        <p class="col-sm-2">郵便番号<p>
+            <p class="col-sm-2">郵便番号<p>
             <label class="ef col-sm-2">
                   <input type="text" name="postCode" placeholder="（任意）" size=7 value={{$postCode}}>
             </label>

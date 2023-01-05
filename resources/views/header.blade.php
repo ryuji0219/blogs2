@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
-    <div class="navbar-brand">ブログ</div>
     <div class="collapse navbar-collapse">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="{{route('showHome')}}" >ブログ一覧 <span class="sr-only"></span></a>
@@ -12,6 +11,15 @@
                 <a class="nav-item nav-link btn" data-toggle="modal" data-target="#joinMember">{{$dsp['title']}}</a>
             @endif
        </div>
+       
+       <div id="clock">
+            <div class="date">
+                @{{year}} / @{{month}} / @{{day}}
+            </div>
+            <div class="time">
+                @{{hours}} : @{{minutes}} <span class="minutes">: @{{seconds}}</span>
+            </div>
+        </div>
     </div>
 
     {{-- ログイン --}}
@@ -45,3 +53,24 @@
         </div>
     </div>
 </nav>
+
+<style>
+#clock {
+    height:20px;
+    display:flex;
+    flex-flow:column;
+    align-items:flex-end;
+    color:white;
+    margin-right: 190pt;
+ }
+
+.date{
+    font-size:13px;
+}
+.time{
+    font-size:18px;
+}
+.minutes{
+    font-size:13px;
+}
+</style>
