@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SearchController extends Controller
 {
@@ -17,11 +18,13 @@ class SearchController extends Controller
         if(!$ybrr->SessionChk()){
             $user['id']  = '0';
             $dsp = ['title' => "会員登録",'btn' => '新規登録'];
+            User::find(0)->increment('scnt');
         }
         else{
             // $user = User::find($_SESSION['u_id']);
             $user=session('user');
             $dsp = ['title' => "会員情報",'btn' => '更新'];
+            User::find($user['id'])->increment('scnt');
         }
 
         $blogs= $this->getSearchData($user,$search);

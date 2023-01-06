@@ -21,12 +21,14 @@ class BlogController extends Controller
          if(!$this->SessionChk()){
             $user['id']  = '0';
             $dsp = ['title' => "会員登録",'btn' => '新規登録'];
+            User::find(0)->increment('cnt');
         }
         else{
             $user=session('user');
             $dsp = ['title' => "会員情報",'btn' => '更新'];
             $user = User::where('id',$user['id'])->first();
             session(['user' => $user]);
+            User::find($user['id'])->increment('cnt');
         }
         $query = DB::table('blogs as b')
            ->Join('users as u', 'b.user_id', '=', 'u.id')
@@ -51,6 +53,7 @@ class BlogController extends Controller
         else{
             $user=session('user');
         }
+        Blog::find($b_id)->increment('cnt');
 
         $blog = Blog::find($b_id);
 
