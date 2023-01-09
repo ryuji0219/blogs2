@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginFormRequest;
 use App\Models\Blog;
 use App\Models\User;
-use App\Http\Controllers\BlogController;
 
 class LoginController extends Controller
 {
@@ -25,19 +24,17 @@ class LoginController extends Controller
                     ->where('invalid','!=',1)
                     ->first();
         if ($DB_User == NULL){
-            $res = [ 'result'=> 'NG','errMsg' => '登録されていないユーザ名です!'];
+            $res = [ 'result'=> 'NG','errMsg' => '登録されていないユーザ名です。'];
         }
         else{    
             // ログインチェック
             if(strtolower($name) == strtolower($DB_User["name"]) && 
                 $pass == $DB_User["password"]){
                     $res = [ 'result'=> 'OK','errMsg' => ''];
-                // return true;
             }
             else{
                 $res = [ 'result'=> 'NG',
-                            'errMsg' => 'ユーザ名とパスワードが一致しません!'];
-                // return false;
+                            'errMsg' => 'ユーザ名とパスワードが一致しません。'];
             }
         }
         return response()->json($res);

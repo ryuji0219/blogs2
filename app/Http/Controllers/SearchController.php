@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SearchController extends Controller
 {
@@ -16,10 +17,14 @@ class SearchController extends Controller
         $ybrr = app()->make('App\Http\Controllers\BlogController');
         if(!$ybrr->SessionChk()){
             $user['id']  = '0';
+            $dsp = ['title' => "会員登録",'btn' => '新規登録'];
+            User::find(0)->increment('scnt');
         }
         else{
             // $user = User::find($_SESSION['u_id']);
             $user=session('user');
+            $dsp = ['title' => "会員情報",'btn' => '更新'];
+            User::find($user['id'])->increment('scnt');
         }
 
         $blogs= $this->getSearchData($user,$search);
@@ -27,7 +32,7 @@ class SearchController extends Controller
         $_SESSION['search_text']=$search["text"];
         $_SESSION['search_option']=$search["option"];
 
-        return view('BlogList',compact('blogs','user','search'));
+        return view('BlogList',compact('blogs','user','search','dsp'));
 
     }
 
@@ -38,25 +43,14 @@ class SearchController extends Controller
            ->leftJoin('users as u', 'b.user_id', '=', 'u.id')
            ->select('b.id','b.title','b.content','u.name','b.updated_at')
            ->where($search["option"], 'like', '%' . $search["text"]  . '%')
-           ->orderBy('b.created_at', 'desc')
+           ->where('u.invalid','!=',1)
+           ->where('b.invalid','!=',1)
+           ->orderBy('b.updated_at', 'desc')
            ->get();
 
         $blogs = $querys->paginate(10);
          return($blogs);
     }
-
-       // ブログ検索データ抽出
-    //    public function getSearchData(&$user,&$blogs,&$search){
-    //     // BlogsとUsersテーブル結合
-    //     $querys = DB::table('blogs as b')
-    //        ->leftJoin('users as u', 'b.user_id', '=', 'u.id')
-    //        ->select('b.id','b.title','b.content','u.name','b.updated_at')
-    //        ->where($search["option"], 'like', '%' . $search["text"]  . '%')
-    //        ->orderBy('b.created_at', 'desc')
-    //        ->get(); 
-
-    //     $blogs = $querys->paginate(10);
-    // }
 
     # ブログ検索データの抽出（ページング時）
     public function showBlogSearch(){
@@ -64,10 +58,12 @@ class SearchController extends Controller
         $ybrr = app()->make('App\Http\Controllers\BlogController');
         if(!$ybrr->SessionChk()){
             $user['id']  = '0';
+            $dsp = ['title' => "会員登録",'btn' => '新規登録'];
         }
         else{
             // $user = User::find($_SESSION['u_id']);
             $user=session('user');
+            $dsp = ['title' => "会員情報",'btn' => '更新'];
         }
 
         $search["option"]=$_SESSION['search_option'];
@@ -75,7 +71,7 @@ class SearchController extends Controller
 
         $blogs=$this->getSearchData($user,$search);
 
-        return view('BlogList',compact('blogs','user','search'));
+        return view('BlogList',compact('blogs','user','search','dsp'));
     }   
 
 }

@@ -10,35 +10,61 @@
         @else
             <p2>ゲストさん</p2>
         @endif
-        <h1>ブログ詳細表示</h1>
+    <form method="POST" action="{{ route('BlogUpdateDelelte') }}" onSubmit="return checkSubmit_up()">
+        @csrf
+            <h1>ブログ詳細表示</h1>
         <p>　作成者：{{ $blog->name }}</p>
         <p>更新日時：{{substr($blog->updated_at,0,19) }}</p>
         <p>
             <label>
                 タイトル<br>
-                <textarea
-                cols="90"
-                rows="1"
-                readonly          
-                >{{ $blog->title }}</textarea>
+                @if(isset($user['id']) && $blog->user_id == $user->id)
+                    <input type="hidden" name="id" value="{{ $blog->id }}">
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    <input name="title" class="form-control" value="{{ $blog->title }}" type="text">
+                    @if ($errors->has('title'))
+                        <div class="text-danger">
+                            {{ $errors->first('title') }}
+                        </div>
+                    @endif  
+                 @else
+                    <textarea cols="30" rows="1" readonly>{{ $blog->title }}</textarea>
+                @endif
             </label>
         </p>
         <p>
             <label>
                 本文<br>
-                <textarea
-                cols="90"
-                rows="6"
-                readonly           
-                >{{ $blog->content }}</textarea>
+                @if(isset($user['id']) && $blog->user_id == $user->id)
+                    <textarea name="content" class="form-control"
+                        cols="90" rows="6" >{{ $blog->content }}</textarea>
+                    @if ($errors->has('content'))
+                        <div class="text-danger">
+                            {{ $errors->first('content') }}
+                        </div>
+                    @endif
+                @else
+                    <textarea cols="90" rows="6" readonly>{{ $blog->content }}</textarea>
+                @endif
             </label>
         </p>
         @if(isset($user['id']) && $blog->user_id == $user->id)
-            <button type="button" class="btn btn-primary" onclick="location.href='{{route('showEdit')}}'">編集</button>
+            <button type="submit" class="btn btn-primary" name="update">更新</button>
+            <button type="submit" class="btn btn-danger" name="delete">削除</button>
         @endif
         <input type="button" class="btn btn-secondary" onclick="history.back()" value="戻る">
+    </form>
     </div>
 </div>
 </body>
 </html>
+<script>
+function checkSubmit_up(){
+        if(window.confirm('処理を続行してよろしいですか？')){
+            return true;
+        } else {
+            return false;
+        }
+}
+</script>
 @endsection

@@ -1,8 +1,12 @@
+//会員登録
 $('.user-create').click(function() {
+  const user_id     = $('input[name="user_id"]').val();
   const newName     = $('input[name="newName"]').val();
   const newEmail     = $('input[name="newEmail"]').val();
   const newPassword     = $('input[name="newPassword"]').val();
   const newPassword2     = $('input[name="newPassword2"]').val();
+  const postCode     = $('input[name="postCode"]').val();
+  $('.err_msg').empty();
   $('.err_msg_user').empty();
   let ret = false;
   $.ajaxSetup({
@@ -16,10 +20,12 @@ $('.user-create').click(function() {
     dataType: "json",
     async: false,
     data: {
+      user_id: user_id,
       newName: newName,
       newPassword: newPassword,
       newEmail: newEmail,
-      newPassword2: newPassword2
+      newPassword2: newPassword2,
+      postCode: postCode
     }  
   }).done(function(res){
     if(res.result == 'OK'){
@@ -44,9 +50,11 @@ $('.user-create').click(function() {
   return ret;
 });
 
+//ログイン
 $('.modal-login').click(function() {
   const name     = $('input[name="name"]').val();
   const password     = $('input[name="password"]').val();
+  $('.err_msg').empty();
   $('.err_msg_login').empty();
   let ret = false;
   $.ajaxSetup({
@@ -84,4 +92,47 @@ $('.modal-login').click(function() {
   });
 
   return ret;
+});
+
+//住所検索
+$('.address-search').click(function() {
+  const postCode     = $('input[name="postCode"]').val();
+  $('.err_msg').empty();
+  $('.err_msg_address').empty();
+  let ret = false;
+
+  if(postCode == null || postCode == ""){
+    $('.err_msg_address').append('<div class="text-danger">' + '郵便番号を入力して下さい。' + '</div>');
+    return false;
+  }
+
+  $.ajax({
+    type: "get",
+    url: "searchAddress/" + postCode,
+    data: {
+      'postCode': postCode
+    },
+    dataType: 'json',
+  }).done(function(res){
+    if(res.result == 'OK'){
+      $("#address1").val(res.address);
+    }
+    else if(res.result == 'NG'){
+      $('.err_msg_address').append('<div class="text-danger">' + res.errMsg + '</div>');
+    }
+    else{
+      $('.err_msg_address').append('<div class="text-danger">システムエラー</div>');
+    }
+    return false;
+  }).fail(function(res){
+    $('.err_msg_address').append('<div class="text-danger">システムエラー</div>');
+    return false;
+  });
+ 
+  return false;
+});
+
+$('.clear_search_button').click(function() {
+  $('input[name="search_text"]').val("");
+  return false;  
 });

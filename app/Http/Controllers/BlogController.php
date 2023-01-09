@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\BlogRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\Blog;
+use App\Models\User;
 
 const SESSION_OUT_MSG = 'ログイン操作をして下さい';
 const PAGE_NUM=10;    //1ページあたりの表示数
@@ -19,9 +20,15 @@ class BlogController extends Controller
     public function showHome(){
          if(!$this->SessionChk()){
             $user['id']  = '0';
+            $dsp = ['title' => "会員登録",'btn' => '新規登録'];
+            User::find(0)->increment('cnt');
         }
         else{
             $user=session('user');
+            $dsp = ['title' => "会員情報",'btn' => '更新'];
+            $user = User::where('id',$user['id'])->first();
+            session(['user' => $user]);
+            User::find($user['id'])->increment('cnt');
         }
         $query = DB::table('blogs as b')
            ->Join('users as u', 'b.user_id', '=', 'u.id')
@@ -30,11 +37,11 @@ class BlogController extends Controller
              ->select('b.id','b.title' ,'b.content','b.user_id','u.name','b.updated_at')
              ->orderby('b.updated_at','DESC');
 
-       $query_all = $query->get();
- 
+
+       $query_all = $query->get(); 
         $blogs = $query_all->paginate(PAGE_NUM);
 
-        return view::make('BlogList',['user'=>$user,'blogs'=>$blogs]);
+        return view::make('BlogList',['user'=>$user,'blogs'=>$blogs,'dsp'=>$dsp]);
     }
 
     // プログ詳細
@@ -46,6 +53,7 @@ class BlogController extends Controller
         else{
             $user=session('user');
         }
+        // Blog::find($b_id)->increment('cnt');
 
         $blog = Blog::find($b_id);
 
@@ -61,8 +69,22 @@ class BlogController extends Controller
             \Session::flash('err_msg', 'データがありません。');
             return redirect(route('showHome'));
         }
-        // return view('BlogDetail',compact('user','blog'));
-        return view::make('BlogDetail',['user'=>$user,'blog'=>$blog]);
+
+        $dsp = ['title' => "会員情報",'btn' => '更新'];
+        return view::make('BlogDetail',['user'=>$user,'blog'=>$blog,'dsp'=>$dsp]);
+    }
+
+    
+    # プログ作成画面表示
+    public function showBlogCreate() 
+    {
+        if(!$this->SessionChk()){
+            return redirect(route('showHome'));
+        }
+       $user=session('user');
+
+        $dsp = ['title' => "会員情報",'btn' => '更新'];
+        return view::make('BlogCreate',['user'=>$user,'dsp'=>$dsp]);
     }
 
     //  ブログ編集フォーム
@@ -153,17 +175,6 @@ class BlogController extends Controller
 
         \Session::flash('ok_msg', $inputs['title'] . ' のブログを削除しました');
         return redirect(route('showHome'));
-    }
-
-    # プログ作成画面表示
-    public function showBlogCreate() 
-    {
-        if(!$this->SessionChk()){
-            return redirect(route('showHome'));
-        }
-       $user=session('user');
-
-        return view('BlogCreate',compact('user'));
     }
 
     #ブログを登録する

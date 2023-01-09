@@ -10,6 +10,8 @@ use App\Http\Controllers\SearchController;
 Route::post('loginCheck', [LoginController::class,'DoLoginCheck']);
 #会員登録チェック（モーダル画面）
 Route::post('userCheck', [UserCreateController::class,'DoUserCheck']);
+// 住所検索
+Route::get('searchAddress/{postCode}', [UserCreateController::class,'searchAddress']);
 
 Route::get('/', function () {return view('login');});
 
