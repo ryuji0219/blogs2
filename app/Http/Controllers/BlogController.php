@@ -53,7 +53,7 @@ class BlogController extends Controller
         else{
             $user=session('user');
         }
-        Blog::find($b_id)->increment('cnt');
+        // Blog::find($b_id)->increment('cnt');
 
         $blog = Blog::find($b_id);
 
