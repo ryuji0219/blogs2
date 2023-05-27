@@ -17,6 +17,8 @@ CONST NEEDED_MODE = 2;
 class BlogController extends Controller
 {
     //チェリーテスト
+    //チェリーテスト２
+
         # ホーム画面表示
     public function showHome(){
          if(!$this->SessionChk()){
