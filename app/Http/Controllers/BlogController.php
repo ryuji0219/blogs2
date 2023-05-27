@@ -19,6 +19,7 @@ class BlogController extends Controller
     //チェリーテスト
     //チェリーテスト２
     //チェリーテスト３
+    //チェリーテスト４
 
         # ホーム画面表示
     public function showHome(){
