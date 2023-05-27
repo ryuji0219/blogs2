@@ -101,7 +101,7 @@ class BlogController extends Controller
             return redirect(route('blogs'));
         }
 
-        // return view('BlogEdit',compact('user', 'blog'));
+
         return view::make('BlogEdit',['user'=>$user,'blog'=>$blog]);
     }
     
