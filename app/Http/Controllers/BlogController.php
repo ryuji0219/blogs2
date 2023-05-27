@@ -16,6 +16,7 @@ CONST NEEDED_MODE = 2;
 
 class BlogController extends Controller
 {
+    //チェリーテスト
         # ホーム画面表示
     public function showHome(){
          if(!$this->SessionChk()){
@@ -53,8 +54,7 @@ class BlogController extends Controller
         else{
             $user=session('user');
         }
-        // Blog::find($b_id)->increment('cnt');
-
+ 
         $blog = Blog::find($b_id);
 
         $blog = DB::table('blogs as b')
