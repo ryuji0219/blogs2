@@ -88,8 +88,6 @@
                     {{ session('err_msg') }}
                 </p>
             @endif
-
- 
             
             1 <input type="checkbox" name="chkbox[]" value="1" id="chkbox_1">
             2 <input type="checkbox" name="chkbox[]" value="2" id="chkbox_2">
@@ -100,14 +98,19 @@
                 <input type="checkbox" name="ueno[]" value="パパ">：パパ</p>
                     
             <!--結果出力用-->
-            <p id="p00"></p>      
+            <span id="p00"></span> 
+            <span name="moji_airi"></span>     
+            <span id="moji_airi[0]"></span>     
     
             <p>【排他】<input type="checkbox" name="check" value="あいり" id="airi">：あいり
             <input type="checkbox" name="check" value="ゆりな" id="val">：ゆりな
             <input type="checkbox" name="check" value="パパ" id="papa">：パパ</p>
 
             <p id="p01"></p>      
+            <p id="p02"></p>      
+            <p id="p03"></p>      
 
+        
              {{-- 一覧表示  --}}
             <table id="tblLocations" class="table table-striped">
                 <tr>
@@ -123,18 +126,21 @@
                     <td>{{ $blog->name}}</td>
                     <td>{{ substr($blog->updated_at,0,19) }}</td>
                     <td><input type="hidden" name="title[]" value={{ $blog->title}}></td>
-                    <td>あいり
-                        <input type="hidden" name="airi[{{$i}}]" value="0">
-                        <input type="checkbox" name="airi[{{$i}}]" value="1">
-                        {{-- <input type="checkbox" name="airi[]" value="1"> --}}
-                        ゆりな
-                        <input type="hidden" name="yuri[{{$i}}]" value="0">
-                        <input type="checkbox" name="yuri[{{$i}}]" value="1">
-                        パパ
-                        <input type="hidden" name="ryu[{{$i}}]" value="0">
-                        <input type="checkbox" name="ryu[{{$i}}]" value="1">
+                    <td>
+                        <input type="hidden" name="ueno_airi[{{$i}}]" value="0">
+                        <input type="hidden" name="ueno_yuri[{{$i}}]" value="0">
+                        <input type="hidden" name="ueno_ryu[{{$i}}]" value="0">
+                        @if($i % 2 === 0)
+                        <input type="checkbox" name="ueno_airi[{{$i}}]" value="1">あいり
+                        <input type="checkbox" name="ueno_yuri[{{$i}}]" value="1">ゆりな
+                        <input type="checkbox" name="ueno_ryu[{{$i}}]" value="1">パパ
+                        @else
+                        <input type="checkbox" name="ueno_airi[{{$i}}]" value="1" style="display:none;"><span name="moji_airi[{{$i}}]" style="display:none;">あいり</span>
+                        <input type="checkbox" name="ueno_yuri[{{$i}}]" value="1" style="display:none;"><span name="moji_yuri[{{$i}}]" style="display:none;">ゆりな</span>
+                        <input type="checkbox" name="ueno_ryu[{{$i}}]" value="1" style="display:none;"><span name="moji_ryu[{{$i}}]" style="display:none;">パパ</span>
+                        <input type="button" name="button[{{$i}}]" value="ボタン">
+                        @endif
                     </td> 
-                    {{-- <td><input name="aaa[{{$i}}]" type="text"/></td> --}}
                 </tr>
                 @endforeach
             </table>
@@ -142,96 +148,7 @@
             {{ $blogs->links('pagination::default') }}
         </div>
     </form>
-            {{-- <table id="tblLocations" cellpadding="0" cellspacing="0" border="1">
-                <tr>
-                    <th>ID </th>
-                    <th>色</th>
-                    <th>並び替え</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Red</td>
-                    <td >1</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Green</td>
-                    <td style="display:none;">2</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Blue</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Yellow</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Purple</td>
-                    <td>5</td>
-                </tr>
-            </table>
-
-            <ul id="sort">
-                <li>動かせる項目1</li>
-                <li>動かせる項目2</li>
-                <li>動かせる項目3</li>
-            </ul> --}}
-              
+     
     </div>
 </body>
-
-{{-- <style type="text/css">
-    table
-    {
-        border: 1px solid #ccc;
-        border-collapse: collapse;
-    }
-    table th
-    {
-        background-color: #e67676;
-        color: #333;
-        font-weight: bold;
-    }
-    table th, table td
-    {
-        width: 100px;
-        padding: 5px;
-        border: 1px solid #ccc;
-    }
-    .selected
-    {
-        background-color: #54C500;
-        color: #fff;
-    }
-</style> --}}
-{{-- <script type="text/javascript">
-    $(function () {
-        $("#tblLocations").sortable({
-            // 見出しである一番上の行以外をドラッグできるように設定
-            items: 'tr:not(tr:first-child)',
-            // マウスカーソルの形状を変える
-            cursor: 'pointer',
-            // ドラッグできる方向は縦方向のみなのでaxissに（y）を設定
-            axis: 'y',
-            // ドラッグされた行が明確に見えるようにstartイベントにselectedクラスを設定
-            start: function (e, ui) {
-                ui.item.addClass("selected");
-            },
-            // ドロップした行のselectedクラスを解除して並び替え列を更新
-            // stop: function (e, ui) {
-            //     ui.item.removeClass("selected");
-            //     $(this).find("tr").each(function (index) {
-            //         // index = 0は見出しの行ですから更新しない
-            //         if (index > 0) {
-            //             $(this).find("td").eq(2).html(index);
-            //         }
-            //     });
-            // }
-        });
-    });
-</script> --}}
 @endsection

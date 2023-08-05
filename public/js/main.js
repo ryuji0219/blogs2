@@ -138,10 +138,81 @@ $('.clear_search_button').click(function() {
 });
 
 $(function() {
+  // 表示用ボタン押下処理
+  $('input[name^="button"]').on('click', function () {
+    let button = $(this).prop('name');
+    let airi = button.replace('button', 'ueno_airi');
+    let yuri = button.replace('button', 'ueno_yuri');
+    let ryu = button.replace('button', 'ueno_ryu');
+    let moji_airi = button.replace('button', 'moji_airi');
+    let moji_yuri = button.replace('button', 'moji_yuri');
+    let moji_ryu = button.replace('button', 'moji_ryu');
+
+    $('input[name="' + airi + '"]').show();
+    $('input[name="' + yuri + '"]').show();
+    $('input[name="' + ryu + '"]').show();
+    $(this).hide();
+    $('span[name="' + moji_airi + '"]').show();
+    $('span[name="' + moji_yuri + '"]').show();
+    $('span[name="' + moji_ryu + '"]').show();
+
+  });
+
   $("input[id^='chkbox_']").click(function(){
     var flag = $(this).prop('checked');
     $("input[id^='chkbox_']").prop('checked', false);
     if (flag) $(this).prop('checked', true);
+  });
+
+  // チェックボックス排他制御
+  $('input[name^="ueno_"]').change(function() {
+    let flag = $(this).prop('checked');
+
+    let name = $(this).prop('name');
+    let disName;
+
+    if($(this).prop('checked')){
+      if (name.indexOf('ueno_airi') >= 0) {
+        let ryu = name.replace('ueno_airi', 'ueno_ryu');
+        $('input[name="' + ryu + '"]').prop("checked", false);
+      }
+
+      if (name.indexOf('ueno_yuri') >= 0) {
+        let ryu = name.replace('ueno_yuri', 'ueno_ryu');
+        $('input[name="' + ryu + '"]').prop("checked", false);
+      }
+
+      if (name.indexOf('ueno_ryu') >= 0) {
+        let airi = name.replace('ueno_ryu', 'ueno_airi');
+        $('input[name="' + airi + '"]').prop("checked", false);
+        yuri = name.replace('ueno_ryu', 'ueno_yuri');
+        $('input[name="' + yuri + '"]').prop("checked", false);
+      }
+    }
+
+    // ①空の配列を用意
+    // let airi = [];
+    // let yuri = [];
+    // let ryu = [];
+
+    // // ②チェックが入ったらループ処理
+    // // $('input[name="airi[]"]:checked').each(function(index) {
+    // $('input[name^="ueno_airi"]').each(function(index) {
+    //   let name2 = $(this).prop('name');
+    //   if (index % 2 === 1){
+    //     // ③value値を配列に格納
+    //     airi.push($(this).prop('checked'));
+    //     if($(this).prop('checked')){
+    //       row = (index - 1) / 2 ;
+    //       $('input[name="ueno_ryu[' + row + ']"]').prop("checked", false);
+    //     }
+    //   }
+    // });
+
+    // if (flag) $(this).prop('checked', true);
+
+        // 格納した配列を表示
+
   });
 
   // チェックボックスをチェックしたら発動
@@ -151,38 +222,15 @@ $(function() {
     var uenos = [];
 
     // ②チェックが入ったらループ処理
-    $('input[name="ueno[]"]').each(function(index) {
-
+    $('input[name="ueno[]"]:checked').each(function(index) {
       // ③value値を配列に格納
       uenos.push($(this).val());
-
     });
 
     // 格納した配列を表示
     $('#p00').text(uenos);
 
   });
-
-  // チェックボックスをチェックしたら発動
-  $('input[name^="airi"]').change(function() {
-
-    // ①空の配列を用意
-    var uenos = [];
-
-    // ②チェックが入ったらループ処理
-    // $('input[name="airi[]"]:checked').each(function(index) {
-    $('input[name^="airi"]').each(function(index) {
-      if (index % 2 === 1){
-        // ③value値を配列に格納
-        uenos.push($(this).prop('checked'));
-      }
-    });
- 
-    // 格納した配列を表示
-    $('#p01').text(uenos);
-
-  });
-
 
   // チェックボックスをチェックしたら発動
   $('input[name="check"]').change(function() {
@@ -230,21 +278,27 @@ $(function() {
         ui.item.addClass("selected");
     },
     // ドロップした行のselectedクラスを解除して並び替え列を更新
-    stop: function (e, ui) {
-        ui.item.removeClass("selected");
-        $(this).find("tr").each(function (index) {
-            // index = 0は見出しの行ですから更新しない
-            if (index > 0) {
-                $(this).find("td").eq(2).html(index);
-            }
-        });
-    }
+    // stop: function (e, ui) {
+    //     ui.item.removeClass("selected");
+    //     $(this).find("tr").each(function (index) {
+    //         // index = 0は見出しの行ですから更新しない
+    //         if (index > 0) {
+    //             $(this).find("td").eq(2).html(index);
+    //         }
+    //     });
+    // }
   });
 
   $("#sort").sortable({
     update: function () {
       $("#log").text($('#sort').sortable("toArray"));
+      var i = 1;
+      $(".seq").each(function () {
+        var seq = $(this).val(i);
+        i++;
+      });
     }
   });
+
 
 });
