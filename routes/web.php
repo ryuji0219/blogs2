@@ -36,7 +36,7 @@ Route::post('UserStore', [UserCreateController::class,'exeUserStore'])->name('Us
 Route::get('DeleteUser', [UserCreateController::class,'exeUserDelete'])->name('DeleteUser');
 
 #プログ検索
-Route::post('BlogSearch', [SearchController::class,'exeBlogSearch'])->name('BlogSearch');
+Route::post('BlogSearch', [SearchController::class,'postBlogSearch'])->name('BlogSearch');
 #プログ検索時の一覧画面表示
 Route::get('BlogSearch', [SearchController::class,'showBlogSearch'])->name('showBlogSearch');
 

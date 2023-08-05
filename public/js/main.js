@@ -136,3 +136,115 @@ $('.clear_search_button').click(function() {
   $('input[name="search_text"]').val("");
   return false;  
 });
+
+$(function() {
+  $("input[id^='chkbox_']").click(function(){
+    var flag = $(this).prop('checked');
+    $("input[id^='chkbox_']").prop('checked', false);
+    if (flag) $(this).prop('checked', true);
+  });
+
+  // チェックボックスをチェックしたら発動
+  $('input[name="ueno[]"]').change(function() {
+
+    // ①空の配列を用意
+    var uenos = [];
+
+    // ②チェックが入ったらループ処理
+    $('input[name="ueno[]"]').each(function(index) {
+
+      // ③value値を配列に格納
+      uenos.push($(this).val());
+
+    });
+
+    // 格納した配列を表示
+    $('#p00').text(uenos);
+
+  });
+
+  // チェックボックスをチェックしたら発動
+  $('input[name^="airi"]').change(function() {
+
+    // ①空の配列を用意
+    var uenos = [];
+
+    // ②チェックが入ったらループ処理
+    // $('input[name="airi[]"]:checked').each(function(index) {
+    $('input[name^="airi"]').each(function(index) {
+      if (index % 2 === 1){
+        // ③value値を配列に格納
+        uenos.push($(this).prop('checked'));
+      }
+    });
+ 
+    // 格納した配列を表示
+    $('#p01').text(uenos);
+
+  });
+
+
+  // チェックボックスをチェックしたら発動
+  $('input[name="check"]').change(function() {
+    var flag = $(this).prop('checked');
+
+    // airi()でチェックの状態を取得
+    var airi = $('#airi').prop('checked');
+    // var prop = $('#prop:checked').val();
+    // val()でチェックの状態を取得
+    var val = $('#val:checked').val();
+    // is()でチェックの状態を取得
+    var papa = $('#papa').is(':checked');
+
+    
+    // もしairiがチェック状態だったら
+    if (airi) {
+      $("#papa").prop("checked", false);
+    }
+ 
+    // もしyurinaがチェック状態だったら
+    if (val) {
+      $("#papa").prop("checked", false);
+    }
+ 
+    // もしpapaがチェック状態だったら
+    if (papa) {
+      // $("#papa").prop("checked", true);
+      $("#airi").prop("checked", false);
+      $("#val").prop("checked", false);
+    }
+
+    if (flag) $(this).prop('checked', true);
+ 
+  });
+
+  $("#tblLocations").sortable({
+    // 見出しである一番上の行以外をドラッグできるように設定
+    items: 'tr:not(tr:first-child)',
+    // マウスカーソルの形状を変える
+    cursor: 'pointer',
+    // ドラッグできる方向は縦方向のみなのでaxissに（y）を設定
+    axis: 'y',
+    // ドラッグされた行が明確に見えるようにstartイベントにselectedクラスを設定
+    start: function (e, ui) {
+        ui.item.addClass("selected");
+    },
+    // ドロップした行のselectedクラスを解除して並び替え列を更新
+    stop: function (e, ui) {
+        ui.item.removeClass("selected");
+        $(this).find("tr").each(function (index) {
+            // index = 0は見出しの行ですから更新しない
+            if (index > 0) {
+                $(this).find("td").eq(2).html(index);
+            }
+        });
+    }
+  });
+
+  $("#sort").sortable({
+    update: function () {
+      $("#log").text($('#sort').sortable("toArray"));
+    }
+  });
+
+});

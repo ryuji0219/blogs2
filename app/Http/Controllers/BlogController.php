@@ -9,60 +9,59 @@ use App\Models\Blog;
 use App\Models\User;
 
 const SESSION_OUT_MSG = 'ログイン操作をして下さい';
-const PAGE_NUM=10;    //1ページあたりの表示数
+const PAGE_NUM = 10;    //1ページあたりの表示数
 
-CONST NORMAL_MODE = 1;
-CONST NEEDED_MODE = 2;
+const NORMAL_MODE = 1;
+const NEEDED_MODE = 2;
 
 class BlogController extends Controller
 {
-        # ホーム画面表示
-    public function showHome(){
-         if(!$this->SessionChk()){
+    // ホーム画面表示
+    public function showHome()
+    {
+        if (!$this->SessionChk()) {
             $user['id']  = '0';
-            $dsp = ['title' => "会員登録",'btn' => '新規登録'];
+            $dsp = ['title' => "会員登録", 'btn' => '新規登録'];
             User::find(0)->increment('cnt');
-        }
-        else{
-            $user=session('user');
-            $dsp = ['title' => "会員情報",'btn' => '更新'];
-            $user = User::where('id',$user['id'])->first();
+        } else {
+            $user = session('user');
+            $dsp = ['title' => "会員情報", 'btn' => '更新'];
+            $user = User::where('id', $user['id'])->first();
             session(['user' => $user]);
             User::find($user['id'])->increment('cnt');
         }
         $query = DB::table('blogs as b')
-           ->Join('users as u', 'b.user_id', '=', 'u.id')
-           ->where('u.invalid','!=',1)
-           ->where('b.invalid','!=',1)
-             ->select('b.id','b.title' ,'b.content','b.user_id','u.name','b.updated_at')
-             ->orderby('b.updated_at','DESC');
+            ->Join('users as u', 'b.user_id', '=', 'u.id')
+            ->where('u.invalid', '!=', 1)
+            ->where('b.invalid', '!=', 1)
+            ->select('b.id', 'b.title', 'b.content', 'b.user_id', 'u.name', 'b.updated_at')
+            ->orderby('b.updated_at', 'DESC');
 
 
-       $query_all = $query->get(); 
+        $query_all = $query->get();
         $blogs = $query_all->paginate(PAGE_NUM);
 
-        return view::make('BlogList',['user'=>$user,'blogs'=>$blogs,'dsp'=>$dsp]);
+        return view::make('BlogList', ['user' => $user, 'blogs' => $blogs, 'dsp' => $dsp]);
     }
 
     // プログ詳細
     public function showDetail($b_id)
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             $user['name'] = "ゲストさん";
-        }
-        else{
-            $user=session('user');
+        } else {
+            $user = session('user');
         }
         // Blog::find($b_id)->increment('cnt');
 
         $blog = Blog::find($b_id);
 
         $blog = DB::table('blogs as b')
-           ->Join('users as u', 'b.user_id', '=', 'u.id')
-           ->select('b.id','b.title','b.content','u.name', 'b.user_id', 'b.updated_at', 'b.invalid')
-           ->where('b.id', '=', $b_id)
-           ->first(); 
-        
+            ->Join('users as u', 'b.user_id', '=', 'u.id')
+            ->select('b.id', 'b.title', 'b.content', 'u.name', 'b.user_id', 'b.updated_at', 'b.invalid')
+            ->where('b.id', '=', $b_id)
+            ->first();
+
         $_SESSION['blog'] = $blog;
 
         if (is_null($blog)) {
@@ -70,61 +69,60 @@ class BlogController extends Controller
             return redirect(route('showHome'));
         }
 
-        $dsp = ['title' => "会員情報",'btn' => '更新'];
-        return view::make('BlogDetail',['user'=>$user,'blog'=>$blog,'dsp'=>$dsp]);
+        $dsp = ['title' => "会員情報", 'btn' => '更新'];
+        return view::make('BlogDetail', ['user' => $user, 'blog' => $blog, 'dsp' => $dsp]);
     }
 
-    
+
     # プログ作成画面表示
-    public function showBlogCreate() 
+    public function showBlogCreate()
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             return redirect(route('showHome'));
         }
-       $user=session('user');
+        $user = session('user');
 
-        $dsp = ['title' => "会員情報",'btn' => '更新'];
-        return view::make('BlogCreate',['user'=>$user,'dsp'=>$dsp]);
+        $dsp = ['title' => "会員情報", 'btn' => '更新'];
+        return view::make('BlogCreate', ['user' => $user, 'dsp' => $dsp]);
     }
 
     //  ブログ編集フォーム
     public function showEdit()
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             return redirect(route('showHome'));
         }
         $blog = $_SESSION['blog'];
-        $user=session('user');
+        $user = session('user');
 
-       if (is_null($blog)) {
+        if (is_null($blog)) {
             \Session::flash('err_msg', 'データがありません。');
             return redirect(route('blogs'));
         }
 
         // return view('BlogEdit',compact('user', 'blog'));
-        return view::make('BlogEdit',['user'=>$user,'blog'=>$blog]);
+        return view::make('BlogEdit', ['user' => $user, 'blog' => $blog]);
     }
-    
+
     #　プログ更新 or 削除
-    public function exeUpdateDelelte(BlogRequest $request) 
+    public function exeUpdateDelelte(BlogRequest $request)
     {
         // ブログのデータを受け取る
         $inputs = $request->all();
 
-        if($request->has('delete')){
+        if ($request->has('delete')) {
             $this->exeDelete($inputs);
-         }
-        else{
+        } else {
             $this->exeUpdate($inputs);
-         }
-         return redirect(route('showHome'));
-   }
-   
+        }
+        return redirect(route('showHome'));
+    }
+
 
     # ブログ更新
     public function exeUpdate($inputs)
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             return redirect(route('showHome'));
         }
 
@@ -140,7 +138,7 @@ class BlogController extends Controller
             ]);
             $blog->update();
             \DB::commit();
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             \DB::rollback();
             abort(500);
         }
@@ -149,10 +147,10 @@ class BlogController extends Controller
         return redirect(route('showHome'));
     }
 
-     # ブログ削除
+    # ブログ削除
     public function exeDelete($inputs)
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             return redirect(route('showHome'));
         }
         \DB::beginTransaction();
@@ -168,7 +166,7 @@ class BlogController extends Controller
             $blog->save();
             // Blog::destroy($inputs['id']);
             \DB::commit();
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             \DB::rollback();
             abort(500);
         }
@@ -178,20 +176,20 @@ class BlogController extends Controller
     }
 
     #ブログを登録する
-    public function exeBlogStore(BlogRequest $request) 
+    public function exeBlogStore(BlogRequest $request)
     {
-        if(!$this->SessionChk()){
+        if (!$this->SessionChk()) {
             return redirect(route('showHome'));
         }
         // ブログのデータを受け取る
         $inputs = $request->all();
-        \DB::beginTransaction();  
-   
+        \DB::beginTransaction();
+
         try {
             // ブログを登録
             Blog::create($inputs);
             \DB::commit();
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             \DB::rollback();
             abort(500);
         }
@@ -200,21 +198,20 @@ class BlogController extends Controller
         return redirect(route('showHome'));
     }
 
-      
+
     public function SessionChk()
     {
         session_start();
-        
+
         $data = session('user');
-    //   dump($data);
-        if(!isset($data)){
+        //   dump($data);
+        if (!isset($data)) {
             \Session::flash('session_error', SESSION_OUT_MSG);
             return false;
         }
 
         session()->regenerate();
         // ssession_egenerate_id(true);
-         return True;
+        return True;
     }
-  
 }
