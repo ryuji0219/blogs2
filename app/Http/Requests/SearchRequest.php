@@ -24,6 +24,14 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
+            'search_text' => 'required|max:100',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'search_text' => '検索欄',
         ];
     }
 }
